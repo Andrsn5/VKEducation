@@ -12,10 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.andre.vkeducation.ui.theme.VKEducationTheme
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+            Timber.d("App started in DEBUG mode")
+        }
+
+
+        if (BuildConfig.TESTING) {
+            Timber.i("Testing mode enabled")
+        }
         enableEdgeToEdge()
         setContent {
             VKEducationTheme {
