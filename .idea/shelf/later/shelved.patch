@@ -1,0 +1,31 @@
+Index: app/src/main/java/dev/andre/vkeducation/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dev.andre.vkeducation\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport dev.andre.vkeducation.ui.theme.VKEducationTheme\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContent {\r\n            VKEducationTheme {\r\n                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->\r\n                    Greeting(\r\n                        name = \"Android\",\r\n                        modifier = Modifier.padding(innerPadding)\r\n                    )\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Greeting(name: String, modifier: Modifier = Modifier) {\r\n    Text(\r\n        text = \"Hello $name!\",\r\n        modifier = modifier\r\n    )\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun GreetingPreview() {\r\n    VKEducationTheme {\r\n        Greeting(\"Android\")\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/dev/andre/vkeducation/MainActivity.kt b/app/src/main/java/dev/andre/vkeducation/MainActivity.kt
+--- a/app/src/main/java/dev/andre/vkeducation/MainActivity.kt	(revision bc3f8959bbfdf22ed95df2ccda03fc3c0db2e46a)
++++ b/app/src/main/java/dev/andre/vkeducation/MainActivity.kt	(date 1772308925199)
+@@ -12,10 +12,20 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.tooling.preview.Preview
+ import dev.andre.vkeducation.ui.theme.VKEducationTheme
++import timber.log.Timber
+ 
+ class MainActivity : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++        if (BuildConfig.DEBUG) {
++            Timber.plant(Timber.DebugTree())
++            Timber.d("App started in DEBUG mode")
++        }
++
++
++        if (BuildConfig.TESTING) {
++            Timber.i("Testing mode enabled")
++        }
+         enableEdgeToEdge()
+         setContent {
+             VKEducationTheme {
