@@ -8,14 +8,9 @@ android {
     namespace = "dev.andre.vkeducation"
     compileSdk = 36
 
-    defaultConfig {
-        applicationId = "dev.andre.vkeducation"
-        minSdk = 28
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -28,30 +23,36 @@ android {
 
         release {
             isMinifyEnabled = true
-            isShrinkResources = true  // удаляет неиспользуемые ресурсы
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             buildConfigField("boolean", "TESTING", "false")
-
-
         }
     }
+    
+    defaultConfig {
+        applicationId = "dev.andre.vkeducation"
+        minSdk = 28
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
