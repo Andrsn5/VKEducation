@@ -7,7 +7,7 @@ Rebase vs Merge:
 
 Amend
 -исправление последнего коммита
--если коммит еще не запушен
+
 
 Push/Forse Push
 -делает пуш на сервер\ принудительно перезаписывает пуш (нужен после amend)
@@ -32,3 +32,59 @@ Fetch/update
 Коммит должен быть : атомарным, месседж (50 - 70 символов), коммит обязательно должен собираться
 
 Есть фича с change List , есть ролл бек для отмены изменений, есть еще шелф \ стефф коммитс (позволяет сохранять изменения вне коммита)
+
+
+обычный Merge
+при слиянии двух веток, берет все коммиты и встраивает из вперед
+было
+master (local): A---B---C---D---E
+                        \
+feature(local):          F---G
+стало
+master (local): A---B---C---D---E--- F---G
+                                            \
+feature(local):                               F---G
+
+
+обычный Merge c squash
+при слиянии двух веток, берет все коммиты и встраивает из вперед
+было
+master (local): A---B---C---D---E
+                                 \
+feature(local):                    F---G
+стало
+master (local): A---B---C---D---E---M  (merge commit)
+                                \  /
+feature(local):                 F---G
+
+обычный rebase
+при слиянии двух веток, берет все коммиты и встраивает из вперед
+было
+master (local): A---B---C---D---E (d,e - new commit)
+                         \
+feature(local):            F---G
+стало
+
+master (local): A---B---C---D---E
+                                 \
+feature(local):                    F---G
+
+
+
+До update merge
+remote: A---B---C
+local:  A---B---F---G
+
+После update merge:
+remote: A---B---C
+local:  A---B---C---M  (merge commit)
+
+До update Rebase
+remote: A---B---C
+local:  A---B---F---G
+
+После update Rebase:
+remote: A---B---C
+local: A---B---C
+        \        \
+        F-----G---M
