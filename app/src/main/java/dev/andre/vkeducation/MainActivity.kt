@@ -2,7 +2,9 @@ package dev.andre.vkeducation
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -128,7 +130,8 @@ fun Greeting() {
                       },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(56.dp)
+            ,
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF6200EE),
@@ -137,24 +140,63 @@ fun Greeting() {
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 8.dp,
                 pressedElevation = 12.dp
-            )) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        "Переход",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        imageVector = Icons.Default.ArrowForward,
-                        contentDescription = "Переход",
-                        modifier = Modifier.size(20.dp)
-                    )
+            )
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "Переход",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold)
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = "Переход",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                if (isValidPhoneNumber(text)){
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:$text")
+                    }
+                    context.startActivity(intent)
                 }
+                else{
+                    Toast.makeText(
+                        context,
+                        "Введите правильный формат номера +79516661122",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(28.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF03A9F4),
+                contentColor = Color.White)
+        ) {
+            Text(
+                text = "Позвонить",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
+}
+
+private fun isValidPhoneNumber(phone: String): Boolean {
+    val regex = Regex("^\\+?[0-9]{10,15}$")
+    return regex.matches(phone)
 }
 
 @Preview(showBackground = true)
