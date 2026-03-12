@@ -1,4 +1,4 @@
-package dev.andre.vkeducation
+package dev.andre.vkeducation.presentation.appdetails
 
 data class App(
     val name: String,

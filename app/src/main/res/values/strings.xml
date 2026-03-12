@@ -17,4 +17,9 @@
     <string name="app_details_developer">Разработчик</string>
 
     <string name="under_developement">В процессе разработки</string>
+
+    <string name="app_catalog_title">RuStore</string>
+    <string name="app_catalog_buttom_decription">Menu</string>
+
+    <string name="app_catalog_no_found_app">Приложение не найдено</string>
 </resources>

@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.ui.theme
+package dev.andre.vkeducation.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -13,13 +13,13 @@ import androidx.compose.material3.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = RuStoreBlue,
-    secondary = PurpleGrey80,
+    secondary = White,
     tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = RuStoreBlue,
-    secondary = PurpleGrey40,
+    secondary = White,
     tertiary = Pink40
 
     /* Other default colors to override

@@ -1,4 +1,4 @@
-package dev.andre.vkeducation
+package dev.andre.vkeducation.presentation.appdetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.andre.vkeducation.ui.theme.VkEducationTheme
+import dev.andre.vkeducation.R
+import dev.andre.vkeducation.presentation.theme.VkEducationTheme
 
 
 @Composable
