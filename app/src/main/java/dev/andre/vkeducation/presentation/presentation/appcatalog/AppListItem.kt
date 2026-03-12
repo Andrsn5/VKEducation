@@ -1,6 +1,5 @@
-package dev.andre.vkeducation.presentation
+package dev.andre.vkeducation.presentation.presentation.appcatalog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import dev.andre.vkeducation.presentation.appdetails.App
-import dev.andre.vkeducation.presentation.appdetails.Category
-import dev.andre.vkeducation.presentation.theme.VkEducationTheme
+import dev.andre.vkeducation.presentation.presentation.appdetails.App
+import dev.andre.vkeducation.presentation.presentation.appdetails.Category
+import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppListItem(
@@ -78,7 +77,7 @@ fun AppListItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = app.developer,
+                    text = app.description,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     maxLines = 1,

@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.appdetails
+package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.andre.vkeducation.R
-import dev.andre.vkeducation.presentation.theme.VkEducationTheme
+import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 fun Developer(

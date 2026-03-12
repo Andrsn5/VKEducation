@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation
+package dev.andre.vkeducation.presentation.presentation.appcatalog
 
 
 import androidx.compose.foundation.background
@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,9 +38,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.andre.vkeducation.R
-import dev.andre.vkeducation.presentation.appdetails.App
-import dev.andre.vkeducation.presentation.appdetails.Category
-import dev.andre.vkeducation.presentation.theme.VkEducationTheme
+import dev.andre.vkeducation.presentation.presentation.appdetails.App
+import dev.andre.vkeducation.presentation.presentation.appdetails.Category
+import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 
 @Composable
@@ -51,14 +50,13 @@ fun AppCatalogRoute(
     viewModel: AppCatalogViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    VkEducationTheme {
-        AppCatalogScreen(
-            state = state,
-            onEvent = viewModel::handleEvent,
-            onAppClick = onAppClick,
-            modifier = modifier
-        )
-    }
+
+    AppCatalogScreen(
+        state = state,
+        onEvent = viewModel::handleEvent,
+        onAppClick = onAppClick,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,7 +93,7 @@ fun AppCatalogScreen(
                         Icon(
                             imageVector = Icons.Default.Menu,
                             contentDescription = stringResource(R.string.app_catalog_buttom_decription),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
                 }
@@ -110,11 +108,8 @@ fun AppCatalogScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(MaterialTheme.colorScheme.primary)
-            ,
-
         ) {
             if (state.isLoading && state.apps.isEmpty()) {
-                // Показываем индикатор только при первой загрузке
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -122,7 +117,6 @@ fun AppCatalogScreen(
                     CircularProgressIndicator()
                 }
             } else if (state.apps.isEmpty()) {
-                // Показываем пустое состояние
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -137,10 +131,14 @@ fun AppCatalogScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.secondary)
+                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                        .background(MaterialTheme.colorScheme.secondary),
+                    contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                    items(state.apps) { app ->
+                    items(
+                        items = state.apps,
+                        key = { it.name }
+                    ) { app ->
                         AppListItem(
                             app = app,
                             onClick = { onAppClick(app) }

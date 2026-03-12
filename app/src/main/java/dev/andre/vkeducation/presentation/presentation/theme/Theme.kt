@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.theme
+package dev.andre.vkeducation.presentation.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

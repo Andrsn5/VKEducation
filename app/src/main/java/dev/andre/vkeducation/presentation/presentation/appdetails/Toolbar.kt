@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.appdetails
+package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dev.andre.vkeducation.presentation.theme.VkEducationTheme
+import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 internal fun Toolbar(
