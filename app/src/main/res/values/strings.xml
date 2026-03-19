@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">VKEducation</string>
+    <string name="first_screen_title">Первая Активность</string>
+    <string name="second_screen_title">Вторая Активность</string>
+
+    <!-- Labels -->
+    <string name="input_hint">Ввод текста для первой активити</string>
+    <string name="received_text_label">Полученный текст:</string>
+
+    <!-- Buttons -->
+    <string name="button_navigate">Переход</string>
+    <string name="button_call">Позвонить</string>
+    <string name="button_back">Назад</string>
+
+    <!-- Actions -->
+    <string name="share">Поделиться</string>
+    <string name="share_via">Поделиться через</string>
+
+    <!-- Messages -->
+    <string name="error_empty_input">Введите данные</string>
+    <string name="error_invalid_phone">Введите правильный формат номера +79516661122</string>
+    <string name="no_data">Нет данных</string>
+
 </resources>
