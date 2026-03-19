@@ -51,7 +51,6 @@ fun AppCatalogScreen(
 
 
 
-
 @Preview(showBackground = true)
 @Composable
 private fun PreviewAppCatalogScreen() {
@@ -87,3 +86,4 @@ private fun PreviewAppCatalogScreen() {
         )
     }
 }
+
