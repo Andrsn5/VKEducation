@@ -20,6 +20,7 @@
 
     <string name="app_catalog_title">RuStore</string>
     <string name="app_catalog_buttom_decription">Menu</string>
+    <string name="error_message">Ошибка</string>
 
     <string name="app_catalog_no_found_app">Приложение не найдено</string>
     <string name="app_error">Ошибка</string>
