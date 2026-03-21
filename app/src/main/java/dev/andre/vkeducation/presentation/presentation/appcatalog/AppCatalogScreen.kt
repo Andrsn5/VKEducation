@@ -60,18 +60,21 @@ private fun PreviewAppCatalogScreen() {
             state = AppCatalogState.Content(
                 appCatalog = listOf(
                     AppCatalog(
+                        id = "1",
                         name = "Гильдия Героев: Экшен ММО РПГ",
                         category = Category.GAME,
                         iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
                         description = "Легендарный рейд героев в Фэнтези РПГ"
                     ),
                     AppCatalog(
+                        id = "2",
                         name = "World of Tanks Blitz",
                         category = Category.GAME,
                         iconUrl = "https://play-lh.googleusercontent.com/_RzS6ZQpOyhIZpy5wvhT6OQVg8mhGmLLdUAUFPY-BOjWc3ITv83Cv4Y4J5pAJDxM1A=w240-h480-rw",
                         description = "Танковая ММО экшен-игра"
                     ),
                     AppCatalog(
+                        id = "3",
                         name = "VK",
                         category = Category.APP,
                         iconUrl = "https://play-lh.googleusercontent.com/OZ6L6hWYAD4UuW3XjiQc4BljH1OEcLyaKqGBaCmH8myiIMKJqad8n_4dsK8SDPc6bO8=w240-h480-rw",

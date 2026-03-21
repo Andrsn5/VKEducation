@@ -121,6 +121,7 @@ private fun Preview() {
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             appDetails = App(
+                id = "1",
                 name = "VK",
                 developer = "VK",
                 category = Category.APP,

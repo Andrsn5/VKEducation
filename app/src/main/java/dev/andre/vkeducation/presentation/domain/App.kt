@@ -1,6 +1,7 @@
-package dev.andre.vkeducation.presentation.presentation.appdetails
+package dev.andre.vkeducation.presentation.domain
 
 data class App(
+    val id: String,
     val name: String,
     val developer: String,
     val category: Category,
