@@ -31,8 +31,6 @@ class AppDetailsViewModel(
             _state.update { AppDetailsState.Loading }
 
             runCatching {
-                delay(2000)
-
                 val app = appDetailsRepository.get(id)
 
                 _state.update {
