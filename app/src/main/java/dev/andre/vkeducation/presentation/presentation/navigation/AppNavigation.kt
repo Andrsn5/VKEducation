@@ -23,14 +23,14 @@ fun AppNavigation(
             AppCatalogRoute(
                 onAppClick = { app ->
                     navController.navigate(
-                        Route.Details.createRoute(Uri.encode(app.name))
+                        Route.Details.createRoute(Uri.encode(app.id))
                     )
                 }
             )
         }
         
         composable(Route.Details.route) { backStackEntry ->
-            val appName = Uri.decode(backStackEntry.arguments?.getString(Route.Details.ARG_APP_NAME) ?: "")
+            val appId = Uri.decode(backStackEntry.arguments?.getString(Route.Details.ARG_APP_ID) ?: "")
             AppDetailsRoute(
                 appName = appId,
                 onBackClick = {

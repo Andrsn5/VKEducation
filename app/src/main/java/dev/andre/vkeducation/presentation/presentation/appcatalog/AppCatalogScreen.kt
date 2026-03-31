@@ -13,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.andre.vkeducation.presentation.presentation.appdetails.Category
+import dev.andre.vkeducation.presentation.domain.AppCatalog
+import dev.andre.vkeducation.presentation.domain.Category
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 

@@ -6,9 +6,9 @@ sealed interface Route {
          override val route: String = "catalog"
      }
      data object Details : Route {
-         const val ARG_APP_NAME = "appName"
-         override val route: String = "details/{$ARG_APP_NAME}"
-         fun createRoute(appName: String): String = "details/${appName}"
+         const val ARG_APP_ID = "appId"
+         override val route: String = "details/{$ARG_APP_ID}"
+         fun createRoute(appId: String): String = "details/${appId}"
      }
 
 }

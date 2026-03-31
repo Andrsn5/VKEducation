@@ -21,6 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.andre.vkeducation.R
+import dev.andre.vkeducation.presentation.domain.App
+import dev.andre.vkeducation.presentation.domain.Category
+import dev.andre.vkeducation.presentation.presentation.appcatalog.ErrorContent
+import dev.andre.vkeducation.presentation.presentation.appcatalog.LoadingContent
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 
