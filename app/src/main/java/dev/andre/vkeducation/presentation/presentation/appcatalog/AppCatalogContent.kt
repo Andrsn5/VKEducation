@@ -16,21 +16,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import dev.andre.vkeducation.presentation.presentation.appdetails.App
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCatalogContent(
-    state: AppCatalogState,
+    state: AppCatalogState.Content,
     onRefresh: () -> Unit,
-    onAppClick: (App) -> Unit,
+    onAppClick: (AppCatalog) -> Unit,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        isRefreshing = state.isLoading,
+        isRefreshing =  state.appCatalog.isEmpty(),
         onRefresh = onRefresh,
         state = pullToRefreshState,
         modifier = modifier
@@ -47,7 +46,7 @@ fun AppCatalogContent(
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(
-                items = state.apps,
+                items = state.appCatalog,
                 key = { it.name }
             ) { app ->
                 AppListItem(
