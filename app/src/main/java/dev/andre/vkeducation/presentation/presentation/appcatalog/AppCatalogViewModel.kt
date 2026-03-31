@@ -2,6 +2,7 @@ package dev.andre.vkeducation.presentation.presentation.appcatalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.andre.vkeducation.R
 import dev.andre.vkeducation.presentation.data.AppCatalogApi
 import dev.andre.vkeducation.presentation.data.AppCatalogMapper
 import dev.andre.vkeducation.presentation.data.AppCatalogRepositoryImpl
