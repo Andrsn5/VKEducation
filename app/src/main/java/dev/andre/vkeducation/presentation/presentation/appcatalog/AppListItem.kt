@@ -34,7 +34,7 @@ import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppListItem(
-    app: App,
+    app: AppCatalog,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,13 +106,9 @@ fun AppListItem(
 private fun PreviewAppListItem() {
     VkEducationTheme {
         AppListItem(
-            app = App(
+            app = AppCatalog(
                 name = "Гильдия Героев: Экшен ММО РПГ",
-                developer = "VK Play",
                 category = Category.GAME,
-                ageRating = 12,
-                size = 223.7f,
-                screenshotUrlList = emptyList(),
                 iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
                 description = "Легендарный рейд героев в Фэнтези РПГ"
             ),

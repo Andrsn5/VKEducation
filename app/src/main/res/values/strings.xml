@@ -20,8 +20,13 @@
 
     <string name="app_catalog_title">RuStore</string>
     <string name="app_catalog_buttom_decription">Menu</string>
+    <string name="app_logo_description">Logo</string>
+    <string name="error_message">Ошибка</string>
+    <string name="empty_content">Приложения не найдены</string>
 
-    <string name="app_catalog_no_found_app">Приложение не найдено</string>
     <string name="app_error">Ошибка</string>
     <string name="app_not_found">Приложение "%1$s" не найдено</string>
+
+    <string name="hello">Привет</string>
+
 </resources>

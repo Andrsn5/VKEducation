@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.andre.vkeducation.presentation.presentation.appcatalog.AppCatalogRoute
-import dev.andre.vkeducation.presentation.presentation.appdetails.AppDetailsScreen
+import dev.andre.vkeducation.presentation.presentation.appdetails.AppDetailsRoute
 
 @Composable
 fun AppNavigation(
@@ -31,7 +31,7 @@ fun AppNavigation(
         
         composable(Route.Details.route) { backStackEntry ->
             val appName = Uri.decode(backStackEntry.arguments?.getString(Route.Details.ARG_APP_NAME) ?: "")
-            AppDetailsScreen(
+            AppDetailsRoute(
                 appName = appName,
                 onBackClick = {
                     navController.popBackStack()
