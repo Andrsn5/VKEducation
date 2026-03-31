@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">VKEducation</string>
+
+    <string name="category_app">Приложения</string>
+    <string name="category_game">Игры</string>
+
+    <string name="app_details_age">Возраст</string>
+    <string name="app_details_size">Размер</string>
+
+    <string name="install">Установить</string>
+
+    <string name="app_details_screenshots">Скриншоты</string>
+
+    <string name="app_details_description">Описание приложения</string>
+    <string name="app_details_read_more">Читать подробнее</string>
+
+    <string name="app_details_developer">Разработчик</string>
+
+    <string name="under_developement">В процессе разработки</string>
+
+    <string name="app_catalog_title">RuStore</string>
+    <string name="app_catalog_buttom_decription">Menu</string>
+
+    <string name="app_catalog_no_found_app">Приложение не найдено</string>
+    <string name="app_error">Ошибка</string>
+    <string name="app_not_found">Приложение "%1$s" не найдено</string>
 </resources>
