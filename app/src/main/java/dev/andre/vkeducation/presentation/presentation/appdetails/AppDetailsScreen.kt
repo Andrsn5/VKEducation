@@ -26,9 +26,7 @@ import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppDetailsScreen(
-    appName: String,
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    appName: String, modifier: Modifier = Modifier, onBackClick: () -> Unit
 ) {
     val app = remember(appName) {
         AppRepository.getAppByName(appName)
@@ -39,43 +37,48 @@ fun AppDetailsScreen(
 
     var descriptionCollapsed by remember { mutableStateOf(false) }
 
-    Column(modifier) {
-        Toolbar(
-            onBackClick = {
-                onBackClick()
-                Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-            },
-            onShareClick = {
-                Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-            },
+    if (app == null) {
+        AppDetailsNotFoundScreen(
+            appName = appName, modifier = modifier, onBackClick = onBackClick
         )
-        Spacer(Modifier.height(8.dp))
-        app?.let {
+    } else {
+        Column(modifier) {
+            Toolbar(
+                onBackClick = {
+                    onBackClick()
+                    Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
+                },
+                onShareClick = {
+                    Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
+                },
+            )
+
+            Spacer(Modifier.height(8.dp))
+
             AppDetailsHeader(
-                app = it,
+                app = app,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-        }
-        Spacer(Modifier.height(16.dp))
-        InstallButton(
-            onClick = {
-                Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-        Spacer(Modifier.height(12.dp))
-        app?.let {
+
+            Spacer(Modifier.height(16.dp))
+            InstallButton(
+                onClick = {
+                    Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
+                }, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(Modifier.height(12.dp))
+
             ScreenshotsList(
-                screenshotUrlList = it.screenshotUrlList,
+                screenshotUrlList = app.screenshotUrlList,
                 contentPadding = PaddingValues(horizontal = 16.dp),
             )
-        }
-        Spacer(Modifier.height(12.dp))
-        app?.let {
+
+            Spacer(Modifier.height(12.dp))
+
             AppDescription(
-                description = it.description,
+                description = app.description,
                 collapsed = descriptionCollapsed,
                 onReadMoreClick = {
                     descriptionCollapsed = true
@@ -84,16 +87,18 @@ fun AppDetailsScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
             )
-        }
-        Spacer(Modifier.height(12.dp))
-        HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.outlineVariant,
-        )
-        Spacer(Modifier.height(12.dp))
-        app?.let {
+
+            Spacer(Modifier.height(12.dp))
+
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
+
+            Spacer(Modifier.height(12.dp))
+
             Developer(
-                name = it.developer,
+                name = app.developer,
                 onClick = {
                     Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
                 },
@@ -104,7 +109,6 @@ fun AppDetailsScreen(
         }
     }
 }
-
 
 
 @Preview

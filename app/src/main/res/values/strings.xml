@@ -22,4 +22,6 @@
     <string name="app_catalog_buttom_decription">Menu</string>
 
     <string name="app_catalog_no_found_app">Приложение не найдено</string>
+    <string name="app_error">Ошибка</string>
+    <string name="app_not_found">Приложение "%1$s" не найдено</string>
 </resources>

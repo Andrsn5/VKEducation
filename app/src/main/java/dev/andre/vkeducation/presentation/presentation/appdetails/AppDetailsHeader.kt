@@ -87,7 +87,7 @@ fun AppDetailsHeader(
 // Статичные строки, которые не приходят из бэкенда
 // нужно хранить в ресурсах (strings.xml).
 @Composable
-private fun getCategoryText(category: Category): String = when (category) {
+fun getCategoryText(category: Category): String = when (category) {
     Category.APP -> stringResource(R.string.category_app)
     Category.GAME -> stringResource(R.string.category_game)
 }

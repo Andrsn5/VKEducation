@@ -36,16 +36,19 @@ class AppCatalogViewModel: ViewModel() {
     private fun loadApps() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
+            runCatching {
+                delay(1000)
 
-            delay(1000)
+                val apps = AppRepository.getApps()
 
-            val apps = AppRepository.getApps()
-
-            _state.update {
-                it.copy(
-                    apps = apps,
-                    isLoading = false
-                )
+                _state.update {
+                    it.copy(
+                        apps = apps,
+                        isLoading = false
+                    )
+                }
+            }.onFailure{
+                _state.update { it.copy(isError = true) }
             }
         }
     }
@@ -54,6 +57,7 @@ class AppCatalogViewModel: ViewModel() {
 data class AppCatalogState(
     val apps: List<App> = emptyList(),
     val isLoading: Boolean = false,
+    val isError: Boolean = false
 )
 
 sealed class AppCatalogEvent {

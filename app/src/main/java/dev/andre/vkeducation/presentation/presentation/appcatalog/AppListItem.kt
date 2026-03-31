@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import dev.andre.vkeducation.presentation.presentation.appdetails.App
+import dev.andre.vkeducation.presentation.presentation.appdetails.AppDetailsHeader
 import dev.andre.vkeducation.presentation.presentation.appdetails.Category
+import dev.andre.vkeducation.presentation.presentation.appdetails.getCategoryText
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
@@ -86,20 +88,14 @@ fun AppListItem(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = when (app.category) {
-                            Category.GAME -> "Игра"
-                            Category.APP -> "Инструменты"
-                        },
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+
+                Text(
+                    text = getCategoryText(app.category),
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }

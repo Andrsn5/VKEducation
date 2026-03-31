@@ -17,19 +17,20 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "catalog"
+        startDestination = Route.Catalog.route
     ) {
-        composable("catalog") {
+        composable(Route.Catalog.route) {
             AppCatalogRoute(
                 onAppClick = { app ->
-                    val encodedName = Uri.encode(app.name)
-                    navController.navigate("details/$encodedName")
+                    navController.navigate(
+                        Route.Details.createRoute(Uri.encode(app.name))
+                    )
                 }
             )
         }
         
-        composable("details/{appName}") { backStackEntry ->
-            val appName = Uri.decode(backStackEntry.arguments?.getString("appName") ?: "")
+        composable(Route.Details.route) { backStackEntry ->
+            val appName = Uri.decode(backStackEntry.arguments?.getString(Route.Details.ARG_APP_NAME) ?: "")
             AppDetailsScreen(
                 appName = appName,
                 onBackClick = {
