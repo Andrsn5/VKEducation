@@ -10,7 +10,7 @@ class AppCatalogRepositoryImpl(
 ): AppCatalogRepository {
     override suspend fun getAll(): List<AppCatalog> {
         val apps = api.getAll()
-        if (apps == null) throw IllegalStateException("${R.string.app_catalog_no_loaded}")
+        if (apps == null) throw IllegalStateException("Ошибка загрузки")
         return apps.map { mapper.toDomain(it) }
     }
 }

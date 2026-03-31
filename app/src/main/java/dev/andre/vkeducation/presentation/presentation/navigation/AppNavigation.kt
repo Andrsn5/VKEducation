@@ -32,7 +32,7 @@ fun AppNavigation(
         composable(Route.Details.route) { backStackEntry ->
             val appId = Uri.decode(backStackEntry.arguments?.getString(Route.Details.ARG_APP_ID) ?: "")
             AppDetailsRoute(
-                appName = appId,
+                appId = appId,
                 onBackClick = {
                     navController.popBackStack()
                 }

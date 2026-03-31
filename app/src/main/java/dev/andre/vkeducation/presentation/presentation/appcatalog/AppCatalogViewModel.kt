@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dev.andre.vkeducation.presentation.data.AppCatalogApi
 import dev.andre.vkeducation.presentation.data.AppCatalogMapper
 import dev.andre.vkeducation.presentation.data.AppCatalogRepositoryImpl
+import dev.andre.vkeducation.presentation.data.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.AppCatalogRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 class AppCatalogViewModel(
     private val repository: AppCatalogRepository = AppCatalogRepositoryImpl(
         AppCatalogApi(),
-        AppCatalogMapper()
+        AppCatalogMapper(CategoryMapper())
     )
 ): ViewModel() {
 

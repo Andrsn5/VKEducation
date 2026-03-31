@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
 import dev.andre.vkeducation.presentation.data.AppDetailsApi
 import dev.andre.vkeducation.presentation.data.AppDetailsMapper
-import dev.andre.vkeducation.presentation.data.AppDetailsRepostoryImpl
+import dev.andre.vkeducation.presentation.data.AppDetailsRepositoryImpl
+import dev.andre.vkeducation.presentation.data.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.AppDetailsRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AppDetailsViewModel(
-    private val appDetailsRepository: AppDetailsRepository = AppDetailsRepostoryImpl(
+    private val appDetailsRepository: AppDetailsRepository = AppDetailsRepositoryImpl(
         appDetailsApi = AppDetailsApi(),
-        appDetailsMapper = AppDetailsMapper()
+        appDetailsMapper = AppDetailsMapper(CategoryMapper())
     )
 ): ViewModel() {
 

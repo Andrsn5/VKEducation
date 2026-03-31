@@ -6,11 +6,11 @@ import kotlinx.coroutines.delay
 class AppDetailsApi {
     suspend fun get(id:String): AppDetailsDto? {
         delay(2000)
-        val app = getByNames(id, getApp())
+        val app = getById(id, getApp())
         return app
     }
 
-    private fun getByNames(id: String, list: List<AppDetailsDto>): AppDetailsDto?{
+    private fun getById(id: String, list: List<AppDetailsDto>): AppDetailsDto?{
         return list.find { it.id == id }
     }
 
