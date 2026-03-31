@@ -31,9 +31,3 @@ fun EmptyContent() {
         )
     }
 }
-
-@Preview
-@Composable
-fun EmptyContentPreview() {
-    EmptyContent()
-}

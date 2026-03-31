@@ -11,21 +11,21 @@ import dev.andre.vkeducation.presentation.presentation.appcatalog.LoadingContent
 
 @Composable
 fun AppDetailsRoute(
-    appName: String,
+    appId: String,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     viewModel: AppDetailsViewModel = viewModel()
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(appName) {
-        viewModel.loadAppDetails(appName)
+    LaunchedEffect(appId) {
+        viewModel.loadAppDetails(appId)
     }
 
     when(val currentState = state) {
         is AppDetailsState.Content ->
             AppDetailsScreen(
-                appName = appName,
+                appName = appId,
                 appDetails = currentState.app,
                 modifier = modifier,
                 onBackClick = onBackClick,

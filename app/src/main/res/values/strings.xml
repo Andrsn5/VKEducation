@@ -29,4 +29,6 @@
 
     <string name="hello">Привет</string>
 
+    <string name="app_catalog_no_loaded">Ошибка загрузки</string>
+
 </resources>

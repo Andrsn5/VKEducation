@@ -1,0 +1,17 @@
+package dev.andre.vkeducation.presentation.data
+
+import dev.andre.vkeducation.presentation.domain.App
+import dev.andre.vkeducation.presentation.domain.AppDetailsRepository
+
+class AppDetailsRepositoryImpl(
+    private val appDetailsApi: AppDetailsApi,
+    private val appDetailsMapper: AppDetailsMapper
+): AppDetailsRepository {
+    override suspend fun get(id: String): App {
+        val appDetailsDto = appDetailsApi.get(id)
+        if (appDetailsDto == null) {
+            throw IllegalArgumentException("Приложение не найдено")
+        }
+        return appDetailsMapper.toDomain(appDetailsDto)
+    }
+}

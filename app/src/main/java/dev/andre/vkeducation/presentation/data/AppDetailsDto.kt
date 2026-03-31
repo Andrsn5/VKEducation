@@ -1,9 +1,12 @@
-package dev.andre.vkeducation.presentation.presentation.appdetails
+package dev.andre.vkeducation.presentation.data
 
-data class App(
+import dev.andre.vkeducation.presentation.domain.Category
+
+data class AppDetailsDto(
+    val id: String,
     val name: String,
     val developer: String,
-    val category: Category,
+    val category: String,
     val ageRating: Int,
     val size: Float,
     val iconUrl: String,
