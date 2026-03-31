@@ -29,7 +29,7 @@ fun AppCatalogContent(
     val pullToRefreshState = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        isRefreshing =  state.appCatalog.isEmpty(),
+        isRefreshing = false,
         onRefresh = onRefresh,
         state = pullToRefreshState,
         modifier = modifier
@@ -37,22 +37,26 @@ fun AppCatalogContent(
             .padding(paddingValues)
             .background(MaterialTheme.colorScheme.primary)
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                .background(MaterialTheme.colorScheme.secondary),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            items(
-                items = state.appCatalog,
-                key = { it.name }
-            ) { app ->
-                AppListItem(
-                    app = app,
-                    onClick = { onAppClick(app) }
-                )
+        if (state.appCatalog.isEmpty()) {
+            EmptyContent()
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .background(MaterialTheme.colorScheme.secondary),
+                contentPadding = PaddingValues(bottom = 16.dp)
+            ) {
+                items(
+                    items = state.appCatalog,
+                    key = { it.name }
+                ) { app ->
+                    AppListItem(
+                        app = app,
+                        onClick = { onAppClick(app) }
+                    )
+                }
             }
         }
     }

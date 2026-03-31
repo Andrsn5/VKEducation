@@ -25,7 +25,7 @@ import dev.andre.vkeducation.R
 @Composable
 fun AppCatalogTopBar(
     onRefreshClick: () -> Unit,
-    viewModel: AppCatalogViewModel = viewModel()
+    onIconClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -34,7 +34,7 @@ fun AppCatalogTopBar(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = stringResource(R.string.app_logo_description),
                     modifier = Modifier.clickable{
-                        viewModel.showHelloSnackbar()
+                       onIconClick()
                     }
                 )
                 Text(

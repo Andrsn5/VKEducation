@@ -19,52 +19,23 @@ import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppCatalogRoute(
-    onAppClick: (AppCatalog) -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: AppCatalogViewModel = viewModel()
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(viewModel.events) {
-        viewModel.events.collect { message ->
-            snackbarHostState.showSnackbar(message)
-        }
-    }
-
-    when(state){
-        is AppCatalogState.Content ->
-            AppCatalogScreen(
-                state = state as AppCatalogState.Content,
-                onAppClick = onAppClick,
-                modifier = modifier,
-                onRefresh = { viewModel.loadApps() },
-                snackbarHostState = snackbarHostState
-            )
-        AppCatalogState.Error ->
-            ErrorContent()
-        AppCatalogState.Loading ->
-            LoadingContent()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun AppCatalogScreen(
     state: AppCatalogState.Content,
     onAppClick: (AppCatalog) -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
+    onIconClick: () -> Unit
 ) {
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            AppCatalogTopBar(onRefreshClick = { onRefresh() })
+            AppCatalogTopBar(
+                onRefreshClick = { onRefresh() },
+                onIconClick = { onIconClick }
+            )
         }
     ) { paddingValues ->
         AppCatalogContent(
@@ -111,7 +82,8 @@ private fun PreviewAppCatalogScreen() {
             onAppClick = {},
             onRefresh = {},
             modifier = Modifier.fillMaxSize(),
-            snackbarHostState = SnackbarHostState()
+            snackbarHostState = SnackbarHostState(),
+            onIconClick = {}
         )
     }
 }

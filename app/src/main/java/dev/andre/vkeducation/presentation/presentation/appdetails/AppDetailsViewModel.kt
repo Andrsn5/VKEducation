@@ -2,6 +2,7 @@ package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +30,8 @@ class AppDetailsViewModel: ViewModel() {
                         app = getByNames(name = name , list = app)
                     )
                 }
-            }.onFailure {
+            }.onFailure { e->
+                if (e is CancellationException) throw e
                 _state.update { AppDetailsState.Error }
             }
         }
@@ -139,14 +141,4 @@ class AppDetailsViewModel: ViewModel() {
                 description = "Социальная сеть"
             )
     )
-}
-
-
-
-
-
-sealed interface AppDetailsState{
-    data object Loading: AppDetailsState
-    data object Error: AppDetailsState
-    data class Content(val app: App?): AppDetailsState
 }
