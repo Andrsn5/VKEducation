@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.andre.vkeducation.presentation.domain.AppCatalog
+import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

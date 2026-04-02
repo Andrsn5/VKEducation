@@ -2,22 +2,23 @@ package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
-import dev.andre.vkeducation.presentation.data.AppDetailsApi
-import dev.andre.vkeducation.presentation.data.AppDetailsMapper
-import dev.andre.vkeducation.presentation.data.AppDetailsRepositoryImpl
-import dev.andre.vkeducation.presentation.data.CategoryMapper
-import dev.andre.vkeducation.presentation.domain.AppDetailsRepository
+import dev.andre.vkeducation.presentation.data.api.AppDetailsApi
+import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
+import dev.andre.vkeducation.presentation.data.impl.AppDetailsRepositoryImpl
+import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
+import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AppDetailsViewModel(
+class AppDetailsViewModel (
     private val appDetailsRepository: AppDetailsRepository = AppDetailsRepositoryImpl(
-        appDetailsApi = AppDetailsApi(),
-        appDetailsMapper = AppDetailsMapper(CategoryMapper())
+        api = AppDetailsApi(),
+        mapper = AppDetailsMapper(CategoryMapper())
     )
 ): ViewModel() {
 

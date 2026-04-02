@@ -1,9 +1,9 @@
-package dev.andre.vkeducation.presentation.data
+package dev.andre.vkeducation.presentation.data.api
 
+import dev.andre.vkeducation.presentation.data.dto.AppDetailsDto
 import kotlinx.coroutines.delay
 
-
-class AppDetailsApi {
+class AppDetailsApi{
     suspend fun get(id:String): AppDetailsDto? {
         delay(2000)
         val app = getById(id, getApp())

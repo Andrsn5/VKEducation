@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.domain
+package dev.andre.vkeducation.presentation.domain.model
 
 data class App(
     val id: String,

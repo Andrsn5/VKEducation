@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import dev.andre.vkeducation.presentation.domain.AppCatalog
+import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

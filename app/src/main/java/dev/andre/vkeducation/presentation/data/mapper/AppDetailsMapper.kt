@@ -1,8 +1,10 @@
-package dev.andre.vkeducation.presentation.data
+package dev.andre.vkeducation.presentation.data.mapper
 
-import dev.andre.vkeducation.presentation.domain.App
+import dev.andre.vkeducation.presentation.data.dto.AppDetailsDto
+import dev.andre.vkeducation.presentation.domain.model.App
 
-class AppDetailsMapper(
+
+class AppDetailsMapper (
     private val categoryMapper: CategoryMapper
 ) {
     fun toDomain(appDetails: AppDetailsDto) = App(

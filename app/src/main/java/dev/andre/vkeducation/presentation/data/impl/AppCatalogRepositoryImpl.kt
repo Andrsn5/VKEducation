@@ -1,9 +1,9 @@
-package dev.andre.vkeducation.presentation.data
+package dev.andre.vkeducation.presentation.data.impl
 
-import dev.andre.vkeducation.R
-import dev.andre.vkeducation.presentation.domain.AppCatalog
-import dev.andre.vkeducation.presentation.domain.AppCatalogRepository
-
+import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
+import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
+import dev.andre.vkeducation.presentation.domain.model.AppCatalog
+import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
 class AppCatalogRepositoryImpl(
     private val api: AppCatalogApi,
     private val mapper: AppCatalogMapper

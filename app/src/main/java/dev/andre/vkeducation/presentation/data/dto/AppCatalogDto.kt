@@ -1,6 +1,4 @@
-package dev.andre.vkeducation.presentation.data
-
-import dev.andre.vkeducation.presentation.domain.Category
+package dev.andre.vkeducation.presentation.data.dto
 
 data class AppCatalogDto(
     val id: String,
