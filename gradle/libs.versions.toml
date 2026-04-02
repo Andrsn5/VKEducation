@@ -13,6 +13,8 @@ navigationCompose = "2.8.9"
 coilCompose = "3.3.0"
 hilt = "2.57.1"
 ksp = "2.2.0-2.0.2"
+hiltNav = "1.2.0"
+hitlVM = "2.10.0"
 
 
 [libraries]
@@ -36,6 +38,9 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilCompose" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNav" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "hitlVM" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

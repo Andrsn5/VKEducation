@@ -76,5 +76,6 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
-
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }

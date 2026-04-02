@@ -4,22 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
-import dev.andre.vkeducation.presentation.data.api.AppDetailsApi
-import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
-import dev.andre.vkeducation.presentation.data.impl.AppDetailsRepositoryImpl
-import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AppDetailsViewModel (
-    private val appDetailsRepository: AppDetailsRepository = AppDetailsRepositoryImpl(
-        api = AppDetailsApi(),
-        mapper = AppDetailsMapper(CategoryMapper())
-    )
+@HiltViewModel
+class AppDetailsViewModel @Inject constructor (
+    private val appDetailsRepository: AppDetailsRepository
 ): ViewModel() {
 
 

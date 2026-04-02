@@ -4,8 +4,9 @@ import dev.andre.vkeducation.presentation.data.api.AppDetailsApi
 import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.domain.model.App
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
+import javax.inject.Inject
 
-class AppDetailsRepositoryImpl(
+class AppDetailsRepositoryImpl @Inject constructor(
     private val api: AppDetailsApi,
     private val mapper: AppDetailsMapper
 ): AppDetailsRepository {

@@ -4,7 +4,9 @@ import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
 import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
-class AppCatalogRepositoryImpl(
+import javax.inject.Inject
+
+class AppCatalogRepositoryImpl @Inject constructor (
     private val api: AppCatalogApi,
     private val mapper: AppCatalogMapper
 ): AppCatalogRepository {

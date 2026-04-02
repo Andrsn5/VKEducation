@@ -2,8 +2,9 @@ package dev.andre.vkeducation.presentation.data.api
 
 import dev.andre.vkeducation.presentation.data.dto.AppDetailsDto
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class AppDetailsApi{
+class AppDetailsApi @Inject constructor() {
     suspend fun get(id:String): AppDetailsDto? {
         delay(2000)
         val app = getById(id, getApp())

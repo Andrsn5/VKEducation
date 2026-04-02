@@ -2,8 +2,9 @@ package dev.andre.vkeducation.presentation.data.api
 
 import dev.andre.vkeducation.presentation.data.dto.AppCatalogDto
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class AppCatalogApi {
+class AppCatalogApi @Inject constructor() {
 
     suspend fun getAll() : List<AppCatalogDto>? {
         delay(2000)

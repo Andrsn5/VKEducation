@@ -8,9 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,7 +17,7 @@ import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 fun AppCatalogRoute(
     onAppClick: (AppCatalog) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AppCatalogViewModel = viewModel()
+    viewModel: AppCatalogViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
