@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt) 
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -72,4 +74,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.dagger.hilt.android)
+    ksp(libs.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }

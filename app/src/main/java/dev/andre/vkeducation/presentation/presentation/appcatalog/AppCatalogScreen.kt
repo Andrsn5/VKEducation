@@ -1,20 +1,17 @@
 package dev.andre.vkeducation.presentation.presentation.appcatalog
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.andre.vkeducation.presentation.domain.AppCatalog
-import dev.andre.vkeducation.presentation.domain.Category
+import dev.andre.vkeducation.presentation.domain.model.AppCatalog
+import dev.andre.vkeducation.presentation.domain.model.Category
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 
@@ -26,7 +23,9 @@ fun AppCatalogScreen(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    scrollIndex: Int,
+    listState: LazyListState
 ) {
     Scaffold(
         snackbarHost = {
@@ -44,7 +43,9 @@ fun AppCatalogScreen(
             onRefresh = { onRefresh() },
             onAppClick = onAppClick,
             modifier = modifier,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            scrollIndex = scrollIndex,
+            listState = listState
         )
     }
 }
@@ -87,7 +88,9 @@ private fun PreviewAppCatalogScreen() {
             onRefresh = {},
             modifier = Modifier.fillMaxSize(),
             snackbarHostState = SnackbarHostState(),
-            onIconClick = {}
+            onIconClick = {},
+            scrollIndex = 0,
+            listState = rememberLazyListState()
         )
     }
 }

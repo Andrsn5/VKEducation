@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import dev.andre.vkeducation.presentation.domain.AppCatalog
-import dev.andre.vkeducation.presentation.domain.Category
+import dev.andre.vkeducation.presentation.domain.model.AppCatalog
+import dev.andre.vkeducation.presentation.domain.model.Category
 import dev.andre.vkeducation.presentation.presentation.appdetails.getCategoryText
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
