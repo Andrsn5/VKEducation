@@ -1,6 +1,8 @@
 package dev.andre.vkeducation.presentation.presentation.appcatalog
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -21,7 +23,9 @@ fun AppCatalogScreen(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    scrollIndex: Int,
+    listState: LazyListState
 ) {
     Scaffold(
         snackbarHost = {
@@ -39,7 +43,9 @@ fun AppCatalogScreen(
             onRefresh = { onRefresh() },
             onAppClick = onAppClick,
             modifier = modifier,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            scrollIndex = scrollIndex,
+            listState = listState
         )
     }
 }
@@ -82,7 +88,9 @@ private fun PreviewAppCatalogScreen() {
             onRefresh = {},
             modifier = Modifier.fillMaxSize(),
             snackbarHostState = SnackbarHostState(),
-            onIconClick = {}
+            onIconClick = {},
+            scrollIndex = 0,
+            listState = rememberLazyListState()
         )
     }
 }

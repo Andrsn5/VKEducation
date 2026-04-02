@@ -1,5 +1,6 @@
 package dev.andre.vkeducation.presentation.presentation.appcatalog
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,6 +22,10 @@ fun AppCatalogRoute(
     viewModel: AppCatalogViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val scrollIndex by viewModel.scrollIndex.collectAsStateWithLifecycle()
+
+    val listState = rememberLazyListState()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
@@ -35,6 +41,11 @@ fun AppCatalogRoute(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.updateScrollIndex(listState.firstVisibleItemIndex)
+        Timber.d("Saving scroll index = ${listState.firstVisibleItemIndex}")
+    }
+
     when(val currentState = state){
         is AppCatalogState.Content ->
             AppCatalogScreen(
@@ -43,7 +54,9 @@ fun AppCatalogRoute(
                 modifier = modifier,
                 onRefresh = { viewModel.loadApps() },
                 snackbarHostState = snackbarHostState,
-                onIconClick = { viewModel.showHelloSnackbar() }
+                onIconClick = { viewModel.showHelloSnackbar() },
+                scrollIndex = scrollIndex,
+                listState = listState
             )
         AppCatalogState.Error ->
             ErrorContent()
