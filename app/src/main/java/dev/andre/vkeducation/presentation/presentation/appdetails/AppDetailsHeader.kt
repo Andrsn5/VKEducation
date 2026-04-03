@@ -49,7 +49,7 @@ fun AppDetailsHeader(
         Spacer(Modifier.width(16.dp))
         Column {
             Text(
-                text = getCategoryText(app.category),
+                text = app.category.name,
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = 12.sp,
             )
@@ -86,13 +86,7 @@ fun AppDetailsHeader(
     }
 }
 
-// Статичные строки, которые не приходят из бэкенда
-// нужно хранить в ресурсах (strings.xml).
-@Composable
-fun getCategoryText(category: Category): String = when (category) {
-    Category.APP -> stringResource(R.string.category_app)
-    Category.GAME -> stringResource(R.string.category_game)
-}
+
 
 @Preview
 @Composable
@@ -101,7 +95,7 @@ private fun Preview() {
         id = "1",
         name = "Гильдия Героев: Экшен ММО РПГ",
         developer = "VK Play",
-        category = Category.GAME,
+        category = Category.ИГРЫ,
         ageRating = 12,
         size = 223.7f,
         screenshotUrlList = listOf(

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
-import dev.andre.vkeducation.presentation.presentation.appdetails.getCategoryText
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
@@ -89,7 +88,7 @@ fun AppListItem(
 
 
                 Text(
-                    text = getCategoryText(app.category),
+                    text = app.category.name,
                     fontSize = 14.sp,
                     color = Color.Gray,
                     maxLines = 1,
@@ -108,7 +107,7 @@ private fun PreviewAppListItem() {
             app = AppCatalog(
                 id = "1",
                 name = "Гильдия Героев: Экшен ММО РПГ",
-                category = Category.GAME,
+                category = Category.ИГРЫ,
                 iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
                 description = "Легендарный рейд героев в Фэнтези РПГ"
             ),

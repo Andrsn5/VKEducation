@@ -126,7 +126,7 @@ private fun Preview() {
                 id = "1",
                 name = "VK",
                 developer = "VK",
-                category = Category.APP,
+                category = Category.НОВОСТИ,
                 ageRating = 12,
                 size = 95.3f,
                 screenshotUrlList = emptyList(),
