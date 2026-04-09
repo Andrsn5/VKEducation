@@ -8,8 +8,10 @@ import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,19 +28,18 @@ class AppDetailsViewModel @Inject constructor (
         viewModelScope.launch {
             _state.update { AppDetailsState.Loading }
 
-            runCatching {
-                val app = appDetailsRepository.get(id)
+            appDetailsRepository.get(id).catch { e ->
+                if (e is CancellationException) throw e
+                _state.update { AppDetailsState.Error }
+                Timber.e(e)
 
+            }.collect { app ->
                 _state.update {
                     AppDetailsState.Content(
                         app = app
                     )
                 }
-            }.onFailure { e->
-                if (e is CancellationException) throw e
-                _state.update { AppDetailsState.Error }
             }
         }
     }
-
 }
