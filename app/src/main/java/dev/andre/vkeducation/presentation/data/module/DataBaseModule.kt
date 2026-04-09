@@ -7,7 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.andre.vkeducation.presentation.data.local.AppDatabase
-import dev.andre.vkeducation.presentation.data.local.AppDetailsDao
+import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogDao
+import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsDao
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,5 +26,10 @@ class DataBaseModule {
     @Provides
     fun provideAppDetailsDao(appDatabase: AppDatabase) : AppDetailsDao {
         return appDatabase.appDetailsDao()
+    }
+
+    @Provides
+    fun provideAppCatalogDao(appDatabase: AppDatabase) : AppCatalogDao {
+        return appDatabase.appCatalogDao()
     }
 }

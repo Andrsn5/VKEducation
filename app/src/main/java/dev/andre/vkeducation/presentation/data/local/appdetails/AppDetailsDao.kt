@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.data.local
+package dev.andre.vkeducation.presentation.data.local.appdetails
 
 import androidx.room.Dao
 import androidx.room.Insert

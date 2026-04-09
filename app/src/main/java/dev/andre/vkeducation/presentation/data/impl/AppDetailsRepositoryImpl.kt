@@ -1,8 +1,8 @@
 package dev.andre.vkeducation.presentation.data.impl
 
 import dev.andre.vkeducation.presentation.data.api.ApiService
-import dev.andre.vkeducation.presentation.data.local.AppDetailsDao
-import dev.andre.vkeducation.presentation.data.local.AppDetailsEntityMapper
+import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsDao
+import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsEntityMapper
 import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.domain.model.App
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
