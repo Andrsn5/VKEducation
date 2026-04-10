@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -55,15 +56,13 @@ class AppCatalogViewModel @Inject constructor(
      fun loadApps() {
         viewModelScope.launch {
             _state.update {  AppCatalogState.Loading }
-            runCatching {
-                val apps = repository.getAll()
 
-                _state.update {
-                    AppCatalogState.Content(appCatalog = apps)
-                }
-            }.onFailure { e ->
+            repository.getAll().catch { e->
                 if (e is CancellationException) throw e
                 _state.update { AppCatalogState.Error }
+                Timber.e(e)
+            }.collect { appCatalogs ->
+                _state.update { AppCatalogState.Content(appCatalog = appCatalogs) }
             }
         }
     }
