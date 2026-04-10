@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.data.module
+package dev.andre.vkeducation.presentation.di
 
 import dagger.Module
 import dagger.Provides
@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -34,9 +35,15 @@ class NetworkModule {
         logging: HttpLoggingInterceptor
     ): OkHttpClient {
         val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
-        return client
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+
+        if (BuildConfig.DEBUG) {
+            client.addInterceptor(logging)
+        }
+
+        return client.build()
     }
 
     @Provides

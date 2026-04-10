@@ -1,26 +1,28 @@
 package dev.andre.vkeducation.presentation.data.impl
 
 import android.content.SharedPreferences
+import dev.andre.vkeducation.presentation.common.CoroutineDispatchers
 import dev.andre.vkeducation.presentation.data.api.ApiService
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogDao
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntityMapper
 import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
+import androidx.core.content.edit
 
 class AppCatalogRepositoryImpl @Inject constructor (
     private val api: ApiService,
     private val dao: AppCatalogDao,
     private val mapper: AppCatalogMapper,
     private val appCatalogMapper: AppCatalogEntityMapper,
-    private val sharedPref: SharedPreferences
+    private val sharedPref: SharedPreferences,
+    private val dispatchers: CoroutineDispatchers
 ): AppCatalogRepository {
     companion object{
         private const val CACHE_DURATION_MS = 1000L
@@ -47,7 +49,7 @@ class AppCatalogRepositoryImpl @Inject constructor (
                     emit(fallbackApps.map { appCatalogMapper.toDomain(it)})
                     return@flow
                 }
-                throw IllegalStateException("Приложения не найдены")
+                throw IllegalStateException("Приложения не найдены: ${e.message}")
             }
 
             if (apiResponse == null){
@@ -57,9 +59,9 @@ class AppCatalogRepositoryImpl @Inject constructor (
             val domain = apiResponse.map { mapper.toDomain(it) }
             val entity = domain.map { appCatalogMapper.toEntity(it) }
 
-            withContext(Dispatchers.IO){
+            withContext(dispatchers.io()){
                 dao.insertAppCatalog(entity)
-                sharedPref.edit().putLong(KEY_LAST_UPDATED, now).apply()
+                sharedPref.edit { putLong(KEY_LAST_UPDATED, now) }
             }
             emit(domain)
         }
