@@ -4,10 +4,13 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -32,7 +35,9 @@ fun AppDetailsScreen(
     appName: String,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    appDetails: App?
+    appDetails: App?,
+    onClickWishList: () -> Unit,
+    isInWishList: Boolean
 ) {
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
@@ -44,15 +49,16 @@ fun AppDetailsScreen(
             appName = appName, modifier = modifier, onBackClick = onBackClick
         )
     } else {
-        Column(modifier) {
+        Column(modifier = modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             Toolbar(
                 onBackClick = {
                     onBackClick()
-                    Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
                 },
                 onShareClick = {
                     Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
                 },
+                onClickWishList = onClickWishList,
+                isInWishList = isInWishList
             )
 
             Spacer(Modifier.height(8.dp))
@@ -131,8 +137,10 @@ private fun Preview() {
                 size = 95.3f,
                 screenshotUrlList = emptyList(),
                 iconUrl = "",
-                description = "Социальная сеть"
-            )
+                description = "Социальная сеть",
+            ),
+            onClickWishList = {},
+            isInWishList = false
         )
     }
 }

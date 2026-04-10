@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -24,22 +25,39 @@ class AppDetailsViewModel @Inject constructor (
     val state : StateFlow<AppDetailsState> = _state.asStateFlow()
 
 
-    fun loadAppDetails(id: String) {
+    fun observeAppDetails(id: String){
         viewModelScope.launch {
             _state.update { AppDetailsState.Loading }
 
-            appDetailsRepository.get(id).catch { e ->
-                if (e is CancellationException) throw e
-                _state.update { AppDetailsState.Error }
-                Timber.e(e)
+            launch {
+                appDetailsRepository.observeAppDetails(id)
+                    .catch { e->
+                        _state.update { AppDetailsState.Error }
+                    }.collect { app ->
+                        _state.update { AppDetailsState.Content(
+                            app = app,
+                            isInWishList = app.isInWishList
+                        ) }
+                    }
+            }
 
-            }.collect { app ->
-                _state.update {
-                    AppDetailsState.Content(
-                        app = app
-                    )
+            launch {
+                runCatching {
+                    appDetailsRepository.get(id)
+                }.onFailure { e->
+                    if (e is CancellationException) throw e
+                    _state.update { AppDetailsState.Error }
                 }
             }
+
         }
     }
+
+
+    fun toggleWishList(id: String){
+        viewModelScope.launch {
+            appDetailsRepository.toggleWishList(id)
+        }
+    }
+
 }
