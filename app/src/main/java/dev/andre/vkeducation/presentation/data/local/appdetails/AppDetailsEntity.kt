@@ -15,6 +15,5 @@ data class AppDetailsEntity(
     val iconUrl: String,
     val screenshotUrlList: List<String> = emptyList(),
     val description: String,
-    val isInWishList: Boolean = false,
     val lastUpdated: Long = System.currentTimeMillis()
 )

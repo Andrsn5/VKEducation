@@ -21,12 +21,14 @@ fun AppCatalogScreen(
     state: AppCatalogState.Content,
     onAppClick: (AppCatalog) -> Unit,
     onRefresh: () -> Unit,
+    isRefreshing: Boolean,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
     onIconClick: () -> Unit,
     scrollIndex: Int,
-    listState: LazyListState
-) {
+    listState: LazyListState,
+    onToggleWishList: (String) -> Unit,
+    ) {
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -41,11 +43,13 @@ fun AppCatalogScreen(
         AppCatalogContent(
             state = state,
             onRefresh = { onRefresh() },
+            isRefreshing = isRefreshing,
             onAppClick = onAppClick,
             modifier = modifier,
             paddingValues = paddingValues,
             scrollIndex = scrollIndex,
-            listState = listState
+            listState = listState,
+            onToggleWishList = onToggleWishList,
         )
     }
 }
@@ -82,7 +86,7 @@ private fun PreviewAppCatalogScreen() {
                         iconUrl = "https://play-lh.googleusercontent.com/OZ6L6hWYAD4UuW3XjiQc4BljH1OEcLyaKqGBaCmH8myiIMKJqad8n_4dsK8SDPc6bO8=w240-h480-rw",
                         description = "Социальная сеть"
                     )
-                )
+                ),
             ),
             onAppClick = {},
             onRefresh = {},
@@ -90,7 +94,9 @@ private fun PreviewAppCatalogScreen() {
             snackbarHostState = SnackbarHostState(),
             onIconClick = {},
             scrollIndex = 0,
-            listState = rememberLazyListState()
+            listState = rememberLazyListState(),
+            onToggleWishList = {},
+            isRefreshing = false,
         )
     }
 }

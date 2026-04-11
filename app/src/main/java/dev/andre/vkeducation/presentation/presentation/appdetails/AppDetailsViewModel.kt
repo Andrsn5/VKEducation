@@ -56,6 +56,12 @@ class AppDetailsViewModel @Inject constructor (
 
     fun toggleWishList(id: String){
         viewModelScope.launch {
+            val currentState = _state.value
+            if (currentState is AppDetailsState.Content) {
+                _state.update {
+                    currentState.copy(isInWishList = !currentState.isInWishList)
+                }
+            }
             appDetailsRepository.toggleWishList(id)
         }
     }
