@@ -1,8 +1,10 @@
 package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +41,10 @@ fun AppDetailsScreen(
     onBackClick: () -> Unit,
     appDetails: App?,
     onClickWishList: () -> Unit,
-    isInWishList: Boolean
+    isInWishList: Boolean,
+    onDownload: () -> Unit,
+    onDelete: () -> Unit,
+    downloadState: DownloadStatus
 ) {
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
@@ -66,16 +73,41 @@ fun AppDetailsScreen(
             AppDetailsHeader(
                 app = appDetails,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                downloadState = downloadState
             )
 
             Spacer(Modifier.height(16.dp))
-            InstallButton(
-                onClick = {
-                    Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-                }, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
+            if (downloadState is DownloadStatus.Installed) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            Toast.makeText(context, "еще не реализовано", Toast.LENGTH_SHORT).show()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = stringResource(R.string.open))
+                    }
+                    Button(
+                        onClick = { onDelete() },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = stringResource(R.string.delete))
+                    }
+                }
+            } else {
+                InstallButton(
+                    onClick = onDownload,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    downloadState = downloadState
+                )
+            }
             Spacer(Modifier.height(12.dp))
 
             ScreenshotsList(
@@ -140,7 +172,10 @@ private fun Preview() {
                 description = "Социальная сеть",
             ),
             onClickWishList = {},
-            isInWishList = false
+            isInWishList = false,
+            onDownload = {},
+            downloadState = DownloadStatus.Prepare,
+            onDelete = {},
         )
     }
 }

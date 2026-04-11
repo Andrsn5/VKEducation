@@ -5,14 +5,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +22,8 @@ class AppDetailsViewModel @Inject constructor (
 
     private val _state : MutableStateFlow<AppDetailsState> = MutableStateFlow(AppDetailsState.Loading)
     val state : StateFlow<AppDetailsState> = _state.asStateFlow()
+
+    private var downloadingApk : Job? = null
 
 
     fun observeAppDetails(id: String){
@@ -63,6 +64,34 @@ class AppDetailsViewModel @Inject constructor (
                 }
             }
             appDetailsRepository.toggleWishList(id)
+        }
+    }
+
+    fun download(id: String){
+        downloadingApk?.cancel()
+        downloadingApk = viewModelScope.launch {
+            appDetailsRepository.getApk(id).collect { downloadState->
+                _state.update { currentState->
+                    if (currentState is AppDetailsState.Content){
+                        currentState.copy( status = downloadState)
+                    }
+                    else{
+                        currentState
+                    }
+                }
+            }
+        }
+    }
+    fun delete(id: String){
+        viewModelScope.launch {
+            _state.update { currentState ->
+                if (currentState is AppDetailsState.Content){
+                    currentState.copy(status = DownloadStatus.Prepare)
+                }
+                else{
+                    currentState
+                }
+            }
         }
     }
 

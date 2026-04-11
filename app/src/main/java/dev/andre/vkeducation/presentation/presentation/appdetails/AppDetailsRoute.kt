@@ -29,7 +29,10 @@ fun AppDetailsRoute(
                 modifier = modifier,
                 onBackClick = onBackClick,
                 onClickWishList = { viewModel.toggleWishList(appId) },
-                isInWishList = currentState.isInWishList
+                isInWishList = currentState.isInWishList,
+                onDownload = { viewModel.download(appId) },
+                onDelete = { viewModel.delete(appId) },
+                downloadState = currentState.status
             )
         is AppDetailsState.Error ->
             ErrorContent()

@@ -36,7 +36,7 @@ fun AppCatalogScreen(
         topBar = {
             AppCatalogTopBar(
                 onRefreshClick = { onRefresh() },
-                onIconClick = { onIconClick }
+                onIconClick = onIconClick
             )
         }
     ) { paddingValues ->

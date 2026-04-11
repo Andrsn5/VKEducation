@@ -9,8 +9,13 @@ import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
 import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.domain.model.App
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
+import dev.andre.vkeducation.presentation.presentation.appdetails.DownloadStatus
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -45,6 +50,32 @@ class AppDetailsRepositoryImpl @Inject constructor(
             entityMapper.toDomain(item.app).copy(
                 isInWishList = item.isInWishList
             )
+        }
+    }
+
+    override suspend fun getApk(id: String): Flow<DownloadStatus> {
+        return flow {
+            emit(DownloadStatus.Prepare)
+
+            api.getApk(id)
+            emit(DownloadStatus.Started)
+
+            emitAll(
+                processeApk().map {
+                    DownloadStatus.Downloading(it)
+                }
+                )
+
+            emit(DownloadStatus.Installed)
+        }.catch {
+            emit(DownloadStatus.Error)
+        }
+    }
+
+    private fun processeApk(): Flow<Long> = flow {
+        for (i in 1 .. 100){
+            emit(i.toLong())
+            delay(100L)
         }
     }
 }

@@ -50,13 +50,6 @@ class AppCatalogViewModel @Inject constructor(
         }
     }
 
-    fun onPullToRefresh() {
-        viewModelScope.launch {
-            _isRefreshing.value = true
-            runCatching { repository.getAll() }.onFailure { /* ... */ }
-            _isRefreshing.value = false
-        }
-    }
 
     fun showHelloSnackbar() {
         viewModelScope.launch {
