@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,9 +27,8 @@ class AppDetailsRepositoryImpl @Inject constructor(
     private val mapper: AppDetailsMapper,
     private val entityMapper: AppDetailsEntityMapper,
     private val dispatchers: CoroutineDispatchers,
-    private val wishlistDao: WishListDao
 ): AppDetailsRepository {
-    override suspend fun get(id: String) {
+    override suspend fun get(id: String) = withContext(dispatchers.io()){
         val dto = api.getAppDetails(id)
         if (dto == null) {
             throw IllegalStateException("Приложение не найдено")
@@ -36,24 +36,19 @@ class AppDetailsRepositoryImpl @Inject constructor(
         val domain = mapper.toDomain(dto)
 
         val entity = entityMapper.toEntity(domain)
-        withContext(dispatchers.io()){
-            dao.insertAppDetails(entity)
-        }
-    }
 
-    override suspend fun toggleWishList(id: String) {
-        wishlistDao.toggle(id)
+        dao.insertAppDetails(entity)
     }
 
     override fun observeAppDetails(id: String): Flow<App> {
         return dao.observeDetailsWithWishlist(id).filterNotNull().map { item ->
             entityMapper.toDomain(item.app).copy(
-                isInWishList = item.isInWishList
+                isInWishList = item.wishList.isNotEmpty()
             )
         }
     }
 
-    override suspend fun getApk(id: String): Flow<DownloadStatus> {
+    override fun getApk(id: String): Flow<DownloadStatus> {
         return flow {
             emit(DownloadStatus.Prepare)
 
@@ -77,5 +72,5 @@ class AppDetailsRepositoryImpl @Inject constructor(
             emit(i.toLong())
             delay(100L)
         }
-    }
+    }.flowOn(dispatchers.io())
 }

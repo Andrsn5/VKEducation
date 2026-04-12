@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface AppCatalogRepository {
     suspend fun getAll()
 
-    suspend fun observeAppCatalog() : Flow<List<AppCatalog>>
+    fun observeAppCatalog() : Flow<List<AppCatalog>>
 
     suspend fun toggleWishList(id: String)
 }

@@ -100,18 +100,16 @@ class AppCatalogViewModel @Inject constructor(
     }
 
 
-    fun toggleWishList(id: String){
+    fun toggleWishList(id: String) {
         viewModelScope.launch {
-            val currentState = _state.value
-            if (currentState is AppCatalogState.Content) {
-                val updatedCatalog = currentState.appCatalog.map { app ->
-                    if (app.id == id) {
-                        app.copy(isInWishList = !app.isInWishList)
-                    } else {
-                        app
-                    }
-                }
-                _state.update { currentState.copy(appCatalog = updatedCatalog) }
+            _state.update { currentState ->
+                if (currentState is AppCatalogState.Content) {
+                    currentState.copy(
+                        appCatalog = currentState.appCatalog.map { app ->
+                            if (app.id == id) app.copy(isInWishList = !app.isInWishList) else app
+                        }
+                    )
+                } else currentState
             }
             wishListRepository.toggle(id)
         }

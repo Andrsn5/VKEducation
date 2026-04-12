@@ -19,9 +19,6 @@ interface AppCatalogDao {
     @Query("SELECT * FROM app_catalog WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): AppCatalogEntity?
 
-    @Query("SELECT app_catalog.*," +
-            " CASE WHEN wish_list.id IS NOT NULL THEN 1 ELSE 0 END AS isInWishList" +
-            " FROM app_catalog" +
-            " LEFT JOIN wish_list ON app_catalog.id = wish_list.id")
-    fun observeAppCatalogWithWishList(): Flow<List<AppCatalogWithWish>>
+    @Query("SELECT * FROM app_catalog")
+    fun observeAppCatalogWithWishList(): Flow<List<AppCatalogWithWish>?>
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
+import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppDetailsViewModel @Inject constructor (
-    private val appDetailsRepository: AppDetailsRepository
+    private val appDetailsRepository: AppDetailsRepository,
+    private val wishListRepository: WishListRepository
 ): ViewModel() {
 
 
@@ -57,13 +59,14 @@ class AppDetailsViewModel @Inject constructor (
 
     fun toggleWishList(id: String){
         viewModelScope.launch {
-            val currentState = _state.value
-            if (currentState is AppDetailsState.Content) {
-                _state.update {
-                    currentState.copy(isInWishList = !currentState.isInWishList)
-                }
+            _state.update { currentState ->
+                if (currentState is AppDetailsState.Content) {
+                    currentState.copy(
+                        isInWishList = !currentState.isInWishList
+                    )
+                } else currentState
             }
-            appDetailsRepository.toggleWishList(id)
+            wishListRepository.toggle(id)
         }
     }
 
