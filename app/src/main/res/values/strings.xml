@@ -8,7 +8,13 @@
     <string name="app_details_size">Размер</string>
 
     <string name="install">Установить</string>
+    <string name="begin">Начало установки</string>
+    <string name="downloading">Скачивание "%1$s"</string>
+    <string name="ready">Установлено</string>
+    <string name="error">Ошибка, повторите позже</string>
 
+    <string name="open">Открыть</string>
+    <string name="delete">Удалить</string>
     <string name="app_details_screenshots">Скриншоты</string>
 
     <string name="app_details_description">Описание приложения</string>

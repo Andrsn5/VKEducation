@@ -9,61 +9,61 @@ import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 import androidx.core.content.edit
+import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
+import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class AppCatalogRepositoryImpl @Inject constructor (
-    private val api: ApiService,
+    private val api: AppCatalogApi,
     private val dao: AppCatalogDao,
     private val mapper: AppCatalogMapper,
     private val appCatalogMapper: AppCatalogEntityMapper,
     private val sharedPref: SharedPreferences,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
+    private val wishlistDao: WishListDao
 ): AppCatalogRepository {
     companion object{
         private const val CACHE_DURATION_MS = 1000L
         private const val KEY_LAST_UPDATED = "last_updated"
     }
 
-    override suspend fun getAll(): Flow<List<AppCatalog>> {
-        return flow {
-            val lastUpdate = sharedPref.getLong(KEY_LAST_UPDATED,0)
-            val now = System.currentTimeMillis()
-            if (now - lastUpdate < CACHE_DURATION_MS){
-                val cachedApps = dao.getAll().firstOrNull()
-                if (!cachedApps.isNullOrEmpty()){
-                    emit(cachedApps.map { appCatalogMapper.toDomain(it)})
-                    return@flow
-                }
-            }
-
-            val apiResponse = try {
-                api.getCatalog()
-            } catch (e: Exception){
-                val fallbackApps = dao.getAll().firstOrNull()
-                if (!fallbackApps.isNullOrEmpty()){
-                    emit(fallbackApps.map { appCatalogMapper.toDomain(it)})
-                    return@flow
-                }
-                throw IllegalStateException("Приложения не найдены: ${e.message}")
-            }
-
-            if (apiResponse == null){
-                throw IllegalStateException("Приложения не найдены")
-            }
-
-            val domain = apiResponse.map { mapper.toDomain(it) }
-            val entity = domain.map { appCatalogMapper.toEntity(it) }
-
-            withContext(dispatchers.io()){
-                dao.insertAppCatalog(entity)
-                sharedPref.edit { putLong(KEY_LAST_UPDATED, now) }
-            }
-            emit(domain)
+    override suspend fun getAll() = withContext(dispatchers.io()){
+        val lastUpdate = sharedPref.getLong(KEY_LAST_UPDATED,0)
+        val now = System.currentTimeMillis()
+        if (now - lastUpdate < CACHE_DURATION_MS){
+             return@withContext
         }
+
+        val apiResponse = api.getCatalog()
+
+
+        if (apiResponse == null){
+            throw IllegalStateException("Приложения не найдены")
+        }
+
+        val domain = apiResponse.map { mapper.toDomain(it) }
+        val entity = domain.map { appCatalogMapper.toEntity(it) }
+
+        dao.insertAppCatalog(entity)
+        sharedPref.edit { putLong(KEY_LAST_UPDATED, now) }
+    }
+
+    override  fun observeAppCatalog(): Flow<List<AppCatalog>> {
+        return dao.observeAppCatalogWithWishList().filterNotNull().map { list ->
+            list.map { item ->
+                appCatalogMapper.toDomain(item.app).copy(
+                    isInWishList = item.wishList.isNotEmpty()
+                )
+            }
+        }.flowOn(dispatchers.io())
+    }
+
+    override suspend fun toggleWishList(id: String) {
+        wishlistDao.toggle(id)
     }
 }

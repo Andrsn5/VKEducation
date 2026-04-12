@@ -17,9 +17,8 @@ fun AppDetailsRoute(
     viewModel: AppDetailsViewModel = hiltViewModel()
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     LaunchedEffect(appId) {
-        viewModel.loadAppDetails(appId)
+        viewModel.observeAppDetails(appId)
     }
 
     when(val currentState = state) {
@@ -29,6 +28,11 @@ fun AppDetailsRoute(
                 appDetails = currentState.app,
                 modifier = modifier,
                 onBackClick = onBackClick,
+                onClickWishList = { viewModel.toggleWishList(appId) },
+                isInWishList = currentState.isInWishList,
+                onDownload = { viewModel.download(appId) },
+                onDelete = { viewModel.delete(appId) },
+                downloadState = currentState.status
             )
         is AppDetailsState.Error ->
             ErrorContent()

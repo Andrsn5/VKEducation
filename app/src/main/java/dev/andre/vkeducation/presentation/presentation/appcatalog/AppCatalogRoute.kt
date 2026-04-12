@@ -10,7 +10,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import timber.log.Timber
 
@@ -22,6 +25,7 @@ fun AppCatalogRoute(
     viewModel: AppCatalogViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     val scrollIndex by viewModel.scrollIndex.collectAsStateWithLifecycle()
 
@@ -46,17 +50,29 @@ fun AppCatalogRoute(
         Timber.d("Saving scroll index = ${listState.firstVisibleItemIndex}")
     }
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewModel.refreshOnResume()
+        }
+    }
+
+
     when(val currentState = state){
         is AppCatalogState.Content ->
             AppCatalogScreen(
                 state = currentState,
                 onAppClick = onAppClick,
                 modifier = modifier,
-                onRefresh = { viewModel.loadApps() },
+                onRefresh = { viewModel.observeApps() },
+                isRefreshing = isRefreshing,
                 snackbarHostState = snackbarHostState,
                 onIconClick = { viewModel.showHelloSnackbar() },
                 scrollIndex = scrollIndex,
-                listState = listState
+                listState = listState,
+                onToggleWishList = { id ->
+                    viewModel.toggleWishList(id)
+                },
             )
         AppCatalogState.Error ->
             ErrorContent()

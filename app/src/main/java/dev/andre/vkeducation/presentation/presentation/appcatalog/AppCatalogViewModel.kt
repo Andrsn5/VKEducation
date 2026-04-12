@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.andre.vkeducation.R
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
+import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppCatalogViewModel @Inject constructor(
     private val repository: AppCatalogRepository,
+    private val wishListRepository: WishListRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state: MutableStateFlow<AppCatalogState> = MutableStateFlow(AppCatalogState.Loading)
@@ -28,6 +30,26 @@ class AppCatalogViewModel @Inject constructor(
 
     private val _events = Channel<AppCatalogEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
+
+    fun refreshOnResume() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+
+            runCatching {
+                repository.getAll()
+            }.onFailure { e ->
+                if (e is CancellationException) throw e
+                _state.update { AppCatalogState.Error }
+            }
+
+            _isRefreshing.value = false
+        }
+    }
+
 
     fun showHelloSnackbar() {
         viewModelScope.launch {
@@ -45,25 +67,51 @@ class AppCatalogViewModel @Inject constructor(
 
     fun updateScrollIndex(index: Int){
         Timber.d("Saving scroll index = $index")
-        savedStateHandle.set(KEY_APP_CATALOG, index)
+        savedStateHandle[KEY_APP_CATALOG] = index
     }
 
     init {
-        loadApps()
+        observeApps()
     }
 
 
-     fun loadApps() {
+     fun observeApps() {
         viewModelScope.launch {
             _state.update {  AppCatalogState.Loading }
 
-            repository.getAll().catch { e->
-                if (e is CancellationException) throw e
-                _state.update { AppCatalogState.Error }
-                Timber.e(e)
-            }.collect { appCatalogs ->
-                _state.update { AppCatalogState.Content(appCatalog = appCatalogs) }
+            launch {
+                repository.observeAppCatalog().catch { e ->
+                    _state.update { AppCatalogState.Error }
+                }.collect { appCatalogs ->
+                    _state.update { AppCatalogState.Content(
+                        appCatalog = appCatalogs,
+                    ) }
+                }
             }
+            launch {
+                runCatching {
+                    repository.getAll()
+                }.onFailure { e->
+                    if (e is CancellationException) throw e
+                    _state.update { AppCatalogState.Error }
+                }
+            }
+        }
+    }
+
+
+    fun toggleWishList(id: String) {
+        viewModelScope.launch {
+            _state.update { currentState ->
+                if (currentState is AppCatalogState.Content) {
+                    currentState.copy(
+                        appCatalog = currentState.appCatalog.map { app ->
+                            if (app.id == id) app.copy(isInWishList = !app.isInWishList) else app
+                        }
+                    )
+                } else currentState
+            }
+            wishListRepository.toggle(id)
         }
     }
 

@@ -25,12 +25,14 @@ import timber.log.Timber
 @Composable
 fun AppCatalogContent(
     state: AppCatalogState.Content,
+    isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onAppClick: (AppCatalog) -> Unit,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     scrollIndex: Int,
-    listState: LazyListState
+    listState: LazyListState,
+    onToggleWishList: (String) -> Unit,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -41,7 +43,7 @@ fun AppCatalogContent(
     }
 
     PullToRefreshBox(
-        isRefreshing = false,
+        isRefreshing = isRefreshing,
         onRefresh = onRefresh,
         state = pullToRefreshState,
         modifier = modifier
@@ -63,11 +65,12 @@ fun AppCatalogContent(
             ) {
                 items(
                     items = state.appCatalog,
-                    key = { it.name }
+                    key = { it.id }
                 ) { app ->
                     AppListItem(
                         app = app,
-                        onClick = { onAppClick(app) }
+                        onClick = { onAppClick(app) },
+                        onToggleWishList = onToggleWishList,
                     )
                 }
             }

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,4 +14,7 @@ interface AppDetailsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAppDetails(appDetailsEntity: AppDetailsEntity)
+
+    @Query("SELECT * FROM app_details WHERE id = :id")
+    fun observeDetailsWithWishlist(id : String) : Flow<AppDetailsWithWish?>
 }
