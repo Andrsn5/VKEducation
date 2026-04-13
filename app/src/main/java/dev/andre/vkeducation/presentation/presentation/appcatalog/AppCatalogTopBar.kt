@@ -24,8 +24,8 @@ import timber.log.Timber
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCatalogTopBar(
-    onRefreshClick: () -> Unit,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    onShowMenuClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -50,7 +50,7 @@ fun AppCatalogTopBar(
             titleContentColor = MaterialTheme.colorScheme.secondary
         ),
         actions = {
-            IconButton(onClick = onRefreshClick) {
+            IconButton(onClick = onShowMenuClick) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = stringResource(R.string.app_catalog_buttom_decription),
