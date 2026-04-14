@@ -1,6 +1,9 @@
 package dev.andre.vkeducation.presentation.presentation.appcatalog
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,17 +55,23 @@ fun AppCatalogScreen(
             )
         }
     ) { paddingValues ->
-        AppCatalogContent(
-            state = state,
-            onRefresh = { onRefresh() },
-            isRefreshing = isRefreshing,
-            onAppClick = onAppClick,
-            modifier = modifier,
-            paddingValues = paddingValues,
-            scrollIndex = scrollIndex,
-            listState = listState,
-            onToggleWishList = onToggleWishList,
-        )
+        Column(modifier = modifier
+            .padding(paddingValues)){
+            AnimatedVisibility(visible = !state.isOnline) {
+                OfflineBanner()
+            }
+            AppCatalogContent(
+                state = state,
+                onRefresh = { onRefresh() },
+                isRefreshing = isRefreshing,
+                onAppClick = onAppClick,
+                modifier = modifier,
+                scrollIndex = scrollIndex,
+                listState = listState,
+                onToggleWishList = onToggleWishList,
+            )
+        }
+
     }
 
     if (showFilterMenu){
@@ -113,6 +122,7 @@ private fun PreviewAppCatalogScreen() {
                         description = "Социальная сеть"
                     )
                 ),
+                isOnline = false
             ),
             onAppClick = {},
             onRefresh = {},

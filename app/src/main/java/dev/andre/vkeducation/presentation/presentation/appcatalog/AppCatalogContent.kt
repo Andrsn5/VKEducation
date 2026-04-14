@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -29,7 +28,6 @@ fun AppCatalogContent(
     onRefresh: () -> Unit,
     onAppClick: (AppCatalog) -> Unit,
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues,
     scrollIndex: Int,
     listState: LazyListState,
     onToggleWishList: (String) -> Unit,
@@ -48,7 +46,6 @@ fun AppCatalogContent(
         state = pullToRefreshState,
         modifier = modifier
             .fillMaxSize()
-            .padding(paddingValues)
             .background(MaterialTheme.colorScheme.primary)
     ) {
         if (state.appCatalog.isEmpty()) {

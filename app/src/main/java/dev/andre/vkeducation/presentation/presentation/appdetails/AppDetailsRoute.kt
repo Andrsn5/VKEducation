@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.andre.vkeducation.presentation.presentation.appcatalog.ErrorContent
 import dev.andre.vkeducation.presentation.presentation.appcatalog.LoadingContent
+import dev.andre.vkeducation.presentation.presentation.appcatalog.OfflineContent
 
 @Composable
 fun AppDetailsRoute(
@@ -25,18 +26,19 @@ fun AppDetailsRoute(
         is AppDetailsState.Content ->
             AppDetailsScreen(
                 appName = appId,
-                appDetails = currentState.app,
+                state = currentState,
                 modifier = modifier,
                 onBackClick = onBackClick,
                 onClickWishList = { viewModel.toggleWishList(appId) },
-                isInWishList = currentState.isInWishList,
                 onDownload = { viewModel.download(appId) },
                 onDelete = { viewModel.delete(appId) },
-                downloadState = currentState.status
             )
         is AppDetailsState.Error ->
             ErrorContent()
         is AppDetailsState.Loading ->
             LoadingContent()
+
+        AppDetailsState.Offline ->
+            OfflineContent()
     }
 }

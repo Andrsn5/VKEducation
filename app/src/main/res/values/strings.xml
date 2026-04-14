@@ -41,4 +41,7 @@
     <string name="onlyWishList">Только избранное</string>
     <string name="category">Категории</string>
     <string name="resert">Сбросить</string>
+
+    <string name="nonetwork">Нет подключения к интренету</string>
+    <string name="repeat_connectiong">Проверьте соединение и попробуйте снова</string>
 </resources>

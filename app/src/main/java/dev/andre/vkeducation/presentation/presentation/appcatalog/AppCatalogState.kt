@@ -5,9 +5,11 @@ import dev.andre.vkeducation.presentation.domain.usecase.GetFilteredCatalogUseCa
 
 sealed interface AppCatalogState{
     data object Loading: AppCatalogState
+    data object Offline : AppCatalogState
     data object Error: AppCatalogState
     data class Content(
         val appCatalog: List<AppCatalog>,
+        val isOnline: Boolean = true,
         val filterParams: GetFilteredCatalogUseCase.Params = GetFilteredCatalogUseCase.Params()
     ) : AppCatalogState
 }

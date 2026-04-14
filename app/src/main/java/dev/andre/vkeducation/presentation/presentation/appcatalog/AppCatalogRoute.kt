@@ -87,5 +87,8 @@ fun AppCatalogRoute(
             ErrorContent()
         AppCatalogState.Loading ->
             LoadingContent()
+
+        AppCatalogState.Offline ->
+            OfflineContent()
     }
 }

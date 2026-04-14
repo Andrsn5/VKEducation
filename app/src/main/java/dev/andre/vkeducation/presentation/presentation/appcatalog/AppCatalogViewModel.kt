@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.andre.vkeducation.R
 import dev.andre.vkeducation.presentation.domain.model.Category
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
+import dev.andre.vkeducation.presentation.domain.repository.NetworkMonitor
 import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
 import dev.andre.vkeducation.presentation.domain.usecase.GetFilteredCatalogUseCase
 import kotlinx.coroutines.CancellationException
@@ -29,6 +30,7 @@ class AppCatalogViewModel @Inject constructor(
     private val repository: AppCatalogRepository,
     private val wishListRepository: WishListRepository,
     private val getFilteredCatalogUseCase: GetFilteredCatalogUseCase,
+    private val networkMonitor: NetworkMonitor,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state: MutableStateFlow<AppCatalogState> = MutableStateFlow(AppCatalogState.Loading)
@@ -93,12 +95,19 @@ class AppCatalogViewModel @Inject constructor(
                     _filterParams.flatMapLatest { params ->
                         getFilteredCatalogUseCase(params)
                     },
-                    _filterParams
-                ) { apps, params ->
-                    AppCatalogState.Content(
-                        appCatalog = apps,
-                        filterParams = params
-                    )
+                    _filterParams,
+                    networkMonitor.isOnline
+                ) { apps, params , isOnline->
+                    if (!isOnline && apps.isEmpty()){
+                        AppCatalogState.Offline
+                    }
+                    else{
+                        AppCatalogState.Content(
+                            appCatalog = apps,
+                            filterParams = params,
+                            isOnline = isOnline
+                        )
+                    }
                 }
                     .catch { _state.update { AppCatalogState.Error } }
                     .collect { contentState ->

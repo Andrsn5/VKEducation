@@ -1,6 +1,7 @@
 package dev.andre.vkeducation.presentation.presentation.appdetails
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import dev.andre.vkeducation.R
 import dev.andre.vkeducation.presentation.domain.model.App
 import dev.andre.vkeducation.presentation.domain.model.Category
+import dev.andre.vkeducation.presentation.presentation.appcatalog.OfflineBanner
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 
@@ -37,19 +39,20 @@ import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 @Composable
 fun AppDetailsScreen(
     appName: String,
+    state: AppDetailsState.Content,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    appDetails: App?,
     onClickWishList: () -> Unit,
-    isInWishList: Boolean,
     onDownload: () -> Unit,
     onDelete: () -> Unit,
-    downloadState: DownloadStatus
 ) {
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
 
     var descriptionCollapsed by remember { mutableStateOf(false) }
+
+    val downloadState = state.status
+    val appDetails = state.app
 
     if (appDetails == null) {
         AppDetailsNotFoundScreen(
@@ -65,8 +68,12 @@ fun AppDetailsScreen(
                     Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
                 },
                 onClickWishList = onClickWishList,
-                isInWishList = isInWishList
+                isInWishList = state.isInWishList
             )
+
+            AnimatedVisibility(visible = !state.isOnline) {
+                OfflineBanner()
+            }
 
             Spacer(Modifier.height(8.dp))
 
@@ -101,7 +108,13 @@ fun AppDetailsScreen(
                 }
             } else {
                 InstallButton(
-                    onClick = onDownload,
+                    onClick = {
+                        if (state.isOnline) {
+                            onDownload()
+                        } else {
+                            Toast.makeText(context, R.string.nonetwork, Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -158,23 +171,26 @@ private fun Preview() {
     VkEducationTheme {
         AppDetailsScreen(
             appName = "VK",
+            state = AppDetailsState.Content(
+                app = App(
+                    id = "1",
+                    name = "VK",
+                    developer = "VK",
+                    category = Category.НОВОСТИ,
+                    ageRating = 12,
+                    size = 95.3f,
+                    screenshotUrlList = emptyList(),
+                    iconUrl = "",
+                    description = "Социальная сеть",
+                ),
+                isInWishList = false,
+                isOnline = false,
+                status = DownloadStatus.Prepare,
+            ),
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
-            appDetails = App(
-                id = "1",
-                name = "VK",
-                developer = "VK",
-                category = Category.НОВОСТИ,
-                ageRating = 12,
-                size = 95.3f,
-                screenshotUrlList = emptyList(),
-                iconUrl = "",
-                description = "Социальная сеть",
-            ),
             onClickWishList = {},
-            isInWishList = false,
             onDownload = {},
-            downloadState = DownloadStatus.Prepare,
             onDelete = {},
         )
     }
