@@ -5,14 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.andre.vkeducation.R
+import dev.andre.vkeducation.presentation.domain.model.Category
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
+import dev.andre.vkeducation.presentation.domain.repository.NetworkMonitor
 import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
+import dev.andre.vkeducation.presentation.domain.usecase.GetFilteredCatalogUseCase
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,6 +29,8 @@ import javax.inject.Inject
 class AppCatalogViewModel @Inject constructor(
     private val repository: AppCatalogRepository,
     private val wishListRepository: WishListRepository,
+    private val getFilteredCatalogUseCase: GetFilteredCatalogUseCase,
+    private val networkMonitor: NetworkMonitor,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state: MutableStateFlow<AppCatalogState> = MutableStateFlow(AppCatalogState.Loading)
@@ -33,6 +41,8 @@ class AppCatalogViewModel @Inject constructor(
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
+    private val _filterParams = MutableStateFlow(GetFilteredCatalogUseCase.Params())
 
 
     fun refreshOnResume() {
@@ -75,23 +85,40 @@ class AppCatalogViewModel @Inject constructor(
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
      fun observeApps() {
         viewModelScope.launch {
-            _state.update {  AppCatalogState.Loading }
+            _state.update { AppCatalogState.Loading }
 
             launch {
-                repository.observeAppCatalog().catch { e ->
-                    _state.update { AppCatalogState.Error }
-                }.collect { appCatalogs ->
-                    _state.update { AppCatalogState.Content(
-                        appCatalog = appCatalogs,
-                    ) }
+                combine(
+                    _filterParams.flatMapLatest { params ->
+                        getFilteredCatalogUseCase(params)
+                    },
+                    _filterParams,
+                    networkMonitor.isOnline
+                ) { apps, params , isOnline->
+                    if (!isOnline && apps.isEmpty()){
+                        AppCatalogState.Offline
+                    }
+                    else{
+                        AppCatalogState.Content(
+                            appCatalog = apps,
+                            filterParams = params,
+                            isOnline = isOnline
+                        )
+                    }
                 }
+                    .catch { _state.update { AppCatalogState.Error } }
+                    .collect { contentState ->
+                        _state.update { contentState }
+                    }
             }
+
             launch {
                 runCatching {
                     repository.getAll()
-                }.onFailure { e->
+                }.onFailure { e ->
                     if (e is CancellationException) throw e
                     _state.update { AppCatalogState.Error }
                 }
@@ -115,5 +142,27 @@ class AppCatalogViewModel @Inject constructor(
         }
     }
 
+    fun filterByCategory(category: Category){
+        _filterParams.update {  params ->
+            val updated = if (category in params.category) {
+                params.category - category
+            } else {
+                params.category + category
+            }
+            params.copy(category = updated)
+        }
+    }
+
+    fun filterByWishList(onlyWishList: Boolean){
+        _filterParams.update {
+            it.copy(onlyWishList = onlyWishList)
+        }
+    }
+
+    fun resetFilter(){
+        _filterParams.update {
+            GetFilteredCatalogUseCase.Params()
+        }
+    }
 
 }

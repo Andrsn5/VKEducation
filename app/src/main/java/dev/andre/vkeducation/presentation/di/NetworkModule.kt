@@ -1,11 +1,16 @@
 package dev.andre.vkeducation.presentation.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.andre.vkeducation.BuildConfig
 import dev.andre.vkeducation.presentation.data.api.ApiService
+import dev.andre.vkeducation.presentation.data.impl.NetworkMonitorImpl
+import dev.andre.vkeducation.presentation.domain.repository.NetworkMonitor
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -72,5 +77,18 @@ class NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(
+        @ApplicationContext context: Context
+    ): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
 
+
+    @Provides
+    @Singleton
+    fun provideNetworkMonitor(
+        connectivityManager: ConnectivityManager
+    ) : NetworkMonitor = NetworkMonitorImpl(connectivityManager)
 }
