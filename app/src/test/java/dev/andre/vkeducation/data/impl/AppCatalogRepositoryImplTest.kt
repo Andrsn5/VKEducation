@@ -88,8 +88,11 @@ class AppCatalogRepositoryImplTest {
         val dto = mock<AppCatalogDto>()
         val domain = mock<AppCatalog>()
         val entity = mock<AppCatalogEntity>()
+        val editor = mock<SharedPreferences.Editor>()
 
-        whenever(sharedPref.getLong(any(), any())).thenReturn(0)
+        whenever(sharedPref.getLong(any(), any())).thenReturn(0L)
+        whenever(sharedPref.edit()).thenReturn(editor)
+        whenever(editor.putLong(any(), any())).thenReturn(editor)
         whenever(api.getCatalog()).thenReturn(listOf(dto))
         whenever(mapper.toDomain(dto)).thenReturn(domain)
         whenever(entityMapper.toEntity(domain)).thenReturn(entity)

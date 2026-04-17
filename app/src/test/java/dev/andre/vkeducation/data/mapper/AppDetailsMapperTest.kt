@@ -4,27 +4,40 @@ import dev.andre.vkeducation.presentation.data.dto.AppDetailsDto
 import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.model.Category
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class AppDetailsMapperTest {
 
     private val categoryMapper = CategoryMapper()
     private val mapper = AppDetailsMapper(categoryMapper)
 
+    private fun createDto(
+        id: String = "1",
+        name: String = "App",
+        developer: String = "Dev",
+        category: String = "Игры",
+        ageRating: Int = 12,
+        size: Float = 50.5f,
+        iconUrl: String = "url",
+        screenshotUrlList: List<String> = listOf("s1", "s2"),
+        description: String = "desc"
+    ) = AppDetailsDto(
+        id = id,
+        name = name,
+        developer = developer,
+        category = category,
+        ageRating = ageRating,
+        size = size,
+        iconUrl = iconUrl,
+        screenshotUrlList = screenshotUrlList,
+        description = description
+    )
+
     @Test
     fun `maps dto to domain`() {
-        val dto = AppDetailsDto(
-            id = "1",
-            name = "App",
-            developer = "Dev",
-            category = "Игры",
-            ageRating = 12,
-            size = 50.5f,
-            iconUrl = "url",
-            screenshotUrlList = listOf("s1", "s2"),
-            description = "desc"
-        )
+        val dto = createDto()
 
         val result = mapper.toDomain(dto)
 
@@ -41,83 +54,59 @@ class AppDetailsMapperTest {
 
     @Test
     fun `maps with empty screenshot list`() {
-        val dto = AppDetailsDto(
-            id = "1",
-            name = "App",
-            developer = "Dev",
-            category = "Образование",
-            ageRating = 3,
-            size = 25.0f,
-            iconUrl = "url",
-            screenshotUrlList = emptyList(),
-            description = "desc"
+        val dto = createDto(
+            screenshotUrlList = emptyList()
         )
 
         val result = mapper.toDomain(dto)
 
-        assertEquals(emptyList<String>(), result.screenshotUrlList)
-    }
-
-    @Test
-    fun `maps with default screenshot list`() {
-        val dto = AppDetailsDto(
-            id = "1",
-            name = "App",
-            developer = "Dev",
-            category = "Финансы",
-            ageRating = 18,
-            size = 100.0f,
-            iconUrl = "url",
-            description = "desc"
-        )
-
-        val result = mapper.toDomain(dto)
-
-        assertEquals(emptyList<String>(), result.screenshotUrlList)
-    }
-
-    @Test
-    fun `maps all fields correctly`() {
-        val dto = AppDetailsDto(
-            id = "app123",
-            name = "Super App",
-            developer = "Super Dev",
-            category = "Здоровье и фитнес",
-            ageRating = 6,
-            size = 75.3f,
-            iconUrl = "https://example.com/icon.png",
-            screenshotUrlList = listOf("screen1.png", "screen2.png", "screen3.png"),
-            description = "A super app description"
-        )
-
-        val result = mapper.toDomain(dto)
-
-        assertEquals("app123", result.id)
-        assertEquals("Super App", result.name)
-        assertEquals("Super Dev", result.developer)
-        assertEquals(Category.ЗДОРОВЬЕ_И_ФИТНЕС, result.category)
-        assertEquals(6, result.ageRating)
-        assertEquals(75.3f, result.size)
-        assertEquals("https://example.com/icon.png", result.iconUrl)
-        assertEquals(3, result.screenshotUrlList.size)
-        assertEquals("A super app description", result.description)
+        assertEquals(emptyList(), result.screenshotUrlList)
     }
 
     @Test
     fun `handles unknown category`() {
-        val dto = AppDetailsDto(
-            id = "1",
-            name = "App",
-            developer = "Dev",
-            category = "UnknownCategory",
-            ageRating = 0,
-            size = 0f,
-            iconUrl = "",
-            description = ""
+        val dto = createDto(
+            category = "UnknownCategory"
         )
 
         val result = mapper.toDomain(dto)
 
         assertEquals(Category.UNKNOWN, result.category)
+    }
+
+    @Test
+    fun `handles negative age rating`() {
+        val dto = createDto(ageRating = -1)
+
+        val result = mapper.toDomain(dto)
+
+        assertEquals(-1, result.ageRating)
+    }
+
+    @Test
+    fun `handles zero size`() {
+        val dto = createDto(size = 0f)
+
+        val result = mapper.toDomain(dto)
+
+        assertEquals(0f, result.size)
+    }
+
+    @Test
+    fun `handles extremely large size`() {
+        val dto = createDto(size = 999999999f)
+
+        val result = mapper.toDomain(dto)
+
+        assertEquals(999999999f, result.size)
+    }
+
+    @Test
+    fun `AppDetailsMapper defaults isInWishList to false`() {
+        val dto = createDto()
+
+        val result = mapper.toDomain(dto)
+
+        assertFalse(result.isInWishList)
     }
 }

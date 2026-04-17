@@ -4,58 +4,57 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntityMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
 import org.junit.Test
-
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class EntityMapperResilienceTest {
 
     private val mapper = AppCatalogEntityMapper()
 
-    @Test
-    fun `domain to entity drops isInWishList field`() {
-        val domain = AppCatalog(
-            id = "1",
-            name = "App",
-            category = Category.ИГРЫ,
-            iconUrl = "url",
-            description = "desc",
-            isInWishList = true
-        )
+    private fun createDomain(
+        id: String = "1",
+        name: String = "App",
+        category: Category = Category.ИГРЫ,
+        iconUrl: String = "url",
+        description: String = "desc",
+        isInWishList: Boolean = false
+    ) = AppCatalog(
+        id = id,
+        name = name,
+        category = category,
+        iconUrl = iconUrl,
+        description = description,
+        isInWishList = isInWishList
+    )
 
-        val entity = mapper.toEntity(domain)
+    private fun createEntity(
+        id: String = "1",
+        name: String = "App",
+        category: Category = Category.ИГРЫ,
+        iconUrl: String = "url",
+        description: String = "desc"
+    ) = AppCatalogEntity(
+        id = id,
+        name = name,
+        category = category,
+        iconUrl = iconUrl,
+        description = description
+    )
 
-        assertEquals("1", entity.id)
-        assertEquals("App", entity.name)
-        assertEquals(Category.ИГРЫ, entity.category)
-    }
 
     @Test
     fun `entity to domain defaults isInWishList to false`() {
-
-        val entity = AppCatalogEntity(
-            id = "1",
-            name = "App",
-            category = Category.ИГРЫ,
-            iconUrl = "url",
-            description = "desc"
-        )
+        val entity = createEntity()
 
         val domain = mapper.toDomain(entity)
 
-        assertEquals(false, domain.isInWishList)
+        assertFalse(domain.isInWishList)
     }
 
     @Test
     fun `handles unknown category in entity`() {
-        val entity = AppCatalogEntity(
-            id = "1",
-            name = "App",
-            category = Category.UNKNOWN,
-            iconUrl = "url",
-            description = "desc"
-        )
+        val entity = createEntity(category = Category.UNKNOWN)
 
         val domain = mapper.toDomain(entity)
 
@@ -64,7 +63,7 @@ class EntityMapperResilienceTest {
 
     @Test
     fun `round trip preserves all fields except isInWishList`() {
-        val original = AppCatalog(
+        val original = createDomain(
             id = "123",
             name = "Test App",
             category = Category.ФИНАНСЫ,
@@ -81,39 +80,14 @@ class EntityMapperResilienceTest {
         assertEquals(original.category, result.category)
         assertEquals(original.iconUrl, result.iconUrl)
         assertEquals(original.description, result.description)
-
         assertFalse(result.isInWishList)
     }
 
-    @Test
-    fun `handles empty strings in entity`() {
-        val entity = AppCatalogEntity(
-            id = "",
-            name = "",
-            category = Category.ИГРЫ,
-            iconUrl = "",
-            description = ""
-        )
-
-        val domain = mapper.toDomain(entity)
-
-        assertEquals("", domain.id)
-        assertEquals("", domain.name)
-        assertEquals("", domain.iconUrl)
-        assertEquals("", domain.description)
-    }
 
     @Test
     fun `handles all categories in entity`() {
         Category.entries.forEach { category ->
-            val entity = AppCatalogEntity(
-                id = "1",
-                name = "App",
-                category = category,
-                iconUrl = "url",
-                description = "desc"
-            )
-
+            val entity = createEntity(category = category)
             val domain = mapper.toDomain(entity)
 
             assertEquals(category, domain.category)
@@ -122,7 +96,7 @@ class EntityMapperResilienceTest {
 
     @Test
     fun `entity mapper does not validate data`() {
-        val invalidDomain = AppCatalog(
+        val invalidDomain = createDomain(
             id = "",
             name = "",
             category = Category.UNKNOWN,

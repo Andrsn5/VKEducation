@@ -2,110 +2,70 @@ package dev.andre.vkeducation.data.mapper
 
 import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.model.Category
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import kotlin.test.DefaultAsserter.assertEquals
+import kotlin.test.assertEquals
 
 class CategoryMapperTest {
 
     private val mapper = CategoryMapper()
 
     @Test
-    fun `maps GAME to ИГРЫ`() {
-        assertEquals(Category.ИГРЫ, mapper.toDomain("Игры"))
+    fun `maps all known category to domain`() {
+        val expectedMaps = mapOf(
+            "Игры" to Category.ИГРЫ,
+            "Производительность" to Category.ПРОИЗВОДИТЕЛЬНОСТЬ,
+            "Здоровье и фитнес" to Category.ЗДОРОВЬЕ_И_ФИТНЕС,
+            "Фото и видео" to Category.ФОТО_И_ВИДЕО,
+            "Еда и напитки" to Category.ЕДА_И_НАПИТКИ,
+            "Образование" to Category.ОБРАЗОВАНИЕ,
+            "Образ жизни" to Category.ОБРАЗ_ЖИЗНИ,
+            "Шопинг" to Category.ШОПИНГ,
+            "Новости" to Category.НОВОСТИ,
+            "Музыка" to Category.МУЗЫКА,
+            "Финансы" to Category.ФИНАНСЫ,
+            "Утилиты" to Category.УТИЛИТЫ,
+            "Навигация" to Category.НАВИГАЦИЯ,
+            "Общение" to Category.ОБЩЕНИЕ,
+            "Бизнес" to Category.БИЗНЕС,
+            "Погода" to Category.ПОГОДА,
+            "Развлечения" to Category.РАЗВЛЕЧЕНИЯ,
+            "Книги и справочники" to Category.КНИГИ_И_СПРАВОЧНИКИ
+        )
+
+        expectedMaps.forEach { (inputValues, expectedValues) ->
+            val actual = mapper.toDomain(inputValues)
+            assertEquals(expectedValues,actual,"Failed for input: $inputValues")
+        }
     }
 
     @Test
-    fun `maps PERFORMANCE to ПРОИЗВОДИТЕЛЬНОСТЬ`() {
-        assertEquals(Category.ПРОИЗВОДИТЕЛЬНОСТЬ, mapper.toDomain("Производительность"))
+    fun `maps unknown input to UNKNOWN`() {
+        val invalidInputs = listOf(
+            "UnknownCategory",
+            "",
+            "   ",
+            "Какой-то вымышленный жанр"
+        )
+
+        invalidInputs.forEach { input ->
+            val actual = mapper.toDomain(input)
+            assertEquals(Category.UNKNOWN, actual, "Failed for input: $input")
+        }
     }
 
     @Test
-    fun `maps HEALTH to ЗДОРОВЬЕ_И_ФИТНЕС`() {
-        assertEquals(Category.ЗДОРОВЬЕ_И_ФИТНЕС, mapper.toDomain("Здоровье и фитнес"))
-    }
+    fun `handles case sensitivity in category names`() {
+        val variations = listOf(
+            "игры" to Category.ИГРЫ,
+            "ИГРЫ" to Category.ИГРЫ,
+            "Игры" to Category.ИГРЫ,
+            "иГрЫ" to Category.ИГРЫ
+        )
 
-    @Test
-    fun `maps PHOTO to ФОТО_И_ВИДЕО`() {
-        assertEquals(Category.ФОТО_И_ВИДЕО, mapper.toDomain("Фото и видео"))
-    }
-
-    @Test
-    fun `maps FOOD to ЕДА_И_НАПИТКИ`() {
-        assertEquals(Category.ЕДА_И_НАПИТКИ, mapper.toDomain("Еда и напитки"))
-    }
-
-    @Test
-    fun `maps EDUCATION to ОБРАЗОВАНИЕ`() {
-        assertEquals(Category.ОБРАЗОВАНИЕ, mapper.toDomain("Образование"))
-    }
-
-    @Test
-    fun `maps LIFESTYLE to ОБРАЗ_ЖИЗНИ`() {
-        assertEquals(Category.ОБРАЗ_ЖИЗНИ, mapper.toDomain("Образ жизни"))
-    }
-
-    @Test
-    fun `maps SHOPPING to ШОПИНГ`() {
-        assertEquals(Category.ШОПИНГ, mapper.toDomain("Шопинг"))
-    }
-
-    @Test
-    fun `maps NEWS to НОВОСТИ`() {
-        assertEquals(Category.НОВОСТИ, mapper.toDomain("Новости"))
-    }
-
-    @Test
-    fun `maps MUSIC to МУЗЫКА`() {
-        assertEquals(Category.МУЗЫКА, mapper.toDomain("Музыка"))
-    }
-
-    @Test
-    fun `maps FINANCE to ФИНАНСЫ`() {
-        assertEquals(Category.ФИНАНСЫ, mapper.toDomain("Финансы"))
-    }
-
-    @Test
-    fun `maps UTILITIES to УТИЛИТЫ`() {
-        assertEquals(Category.УТИЛИТЫ, mapper.toDomain("Утилиты"))
-    }
-
-    @Test
-    fun `maps NAVIGATION to НАВИГАЦИЯ`() {
-        assertEquals(Category.НАВИГАЦИЯ, mapper.toDomain("Навигация"))
-    }
-
-    @Test
-    fun `maps SOCIAL to ОБЩЕНИЕ`() {
-        assertEquals(Category.ОБЩЕНИЕ, mapper.toDomain("Общение"))
-    }
-
-    @Test
-    fun `maps BUSINESS to БИЗНЕС`() {
-        assertEquals(Category.БИЗНЕС, mapper.toDomain("Бизнес"))
-    }
-
-    @Test
-    fun `maps WEATHER to ПОГОДА`() {
-        assertEquals(Category.ПОГОДА, mapper.toDomain("Погода"))
-    }
-
-    @Test
-    fun `maps ENTERTAINMENT to РАЗВЛЕЧЕНИЯ`() {
-        assertEquals(Category.РАЗВЛЕЧЕНИЯ, mapper.toDomain("Развлечения"))
-    }
-
-    @Test
-    fun `maps BOOKS to КНИГИ_И_СПРАВОЧНИКИ`() {
-        assertEquals(Category.КНИГИ_И_СПРАВОЧНИКИ, mapper.toDomain("Книги и справочники"))
-    }
-
-    @Test
-    fun `maps unknown string to UNKNOWN`() {
-        assertEquals(Category.UNKNOWN, mapper.toDomain("UnknownCategory"))
-    }
-
-    @Test
-    fun `maps empty string to UNKNOWN`() {
-        assertEquals(Category.UNKNOWN, mapper.toDomain(""))
+        variations.forEach { (input, expected) ->
+            val result = mapper.toDomain(input)
+            assertEquals("Category '$input' should map to $expected", expected, result)
+        }
     }
 }

@@ -4,22 +4,46 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntityMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class AppCatalogEntityMapperTest {
 
     private val mapper = AppCatalogEntityMapper()
 
+    private fun createDomain(
+        id: String = "1",
+        name: String = "App",
+        category: Category = Category.ИГРЫ,
+        iconUrl: String = "url",
+        description: String = "desc",
+        isInWishList: Boolean = false
+    ) = AppCatalog(
+        id = id,
+        name = name,
+        category = category,
+        iconUrl = iconUrl,
+        description = description,
+        isInWishList = isInWishList
+    )
+
+    private fun createEntity(
+        id: String = "1",
+        name: String = "App",
+        category: Category = Category.ИГРЫ,
+        iconUrl: String = "url",
+        description: String = "desc"
+    ) = AppCatalogEntity(
+        id = id,
+        name = name,
+        category = category,
+        iconUrl = iconUrl,
+        description = description
+    )
+
     @Test
     fun `maps entity to domain`() {
-        val entity = AppCatalogEntity(
-            id = "1",
-            name = "App",
-            category = Category.ИГРЫ,
-            iconUrl = "url",
-            description = "desc"
-        )
+        val entity = createEntity()
 
         val result = mapper.toDomain(entity)
 
@@ -32,14 +56,7 @@ class AppCatalogEntityMapperTest {
 
     @Test
     fun `maps domain to entity`() {
-        val domain = AppCatalog(
-            id = "1",
-            name = "App",
-            category = Category.ИГРЫ,
-            iconUrl = "url",
-            description = "desc",
-            isInWishList = false
-        )
+        val domain = createDomain(isInWishList = false)
 
         val result = mapper.toEntity(domain)
 
@@ -50,35 +67,15 @@ class AppCatalogEntityMapperTest {
         assertEquals("desc", result.description)
     }
 
-    @Test
-    fun `domain to entity ignores isInWishList`() {
-        val domain = AppCatalog(
-            id = "1",
-            name = "App",
-            category = Category.ОБРАЗОВАНИЕ,
-            iconUrl = "url",
-            description = "desc",
-            isInWishList = true
-        )
-
-        val result = mapper.toEntity(domain)
-
-        assertEquals("1", result.id)
-        assertEquals("App", result.name)
-        assertEquals(Category.ОБРАЗОВАНИЕ, result.category)
-        assertEquals("url", result.iconUrl)
-        assertEquals("desc", result.description)
-    }
 
     @Test
     fun `round trip mapping preserves data`() {
-        val original = AppCatalog(
+        val original = createDomain(
             id = "123",
             name = "Test App",
             category = Category.ФИНАНСЫ,
             iconUrl = "https://example.com/icon.png",
-            description = "Test description",
-            isInWishList = false
+            description = "Test description"
         )
 
         val entity = mapper.toEntity(original)
@@ -102,15 +99,7 @@ class AppCatalogEntityMapperTest {
         )
 
         categories.forEach { category ->
-            val domain = AppCatalog(
-                id = "1",
-                name = "App",
-                category = category,
-                iconUrl = "url",
-                description = "desc",
-                isInWishList = false
-            )
-
+            val domain = createDomain(category = category)
             val entity = mapper.toEntity(domain)
             val result = mapper.toDomain(entity)
 
