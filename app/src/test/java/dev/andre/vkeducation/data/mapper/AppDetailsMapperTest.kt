@@ -5,6 +5,7 @@ import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.model.Category
 import org.junit.Test
+import kotlin.collections.emptyList
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
@@ -44,7 +45,7 @@ class AppDetailsMapperTest {
         assertEquals("1", result.id)
         assertEquals("App", result.name)
         assertEquals("Dev", result.developer)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals(12, result.ageRating)
         assertEquals(50.5f, result.size)
         assertEquals("url", result.iconUrl)

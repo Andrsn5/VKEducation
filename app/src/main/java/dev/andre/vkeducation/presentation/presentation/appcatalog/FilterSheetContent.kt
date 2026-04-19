@@ -115,7 +115,7 @@ fun FilterSheetContent(
 private fun PreviewFilterSheetContent() {
     FilterSheetContent(
         currentParams = GetFilteredCatalogUseCase.Params(
-            category = setOf(Category.ИГРЫ),
+            category = setOf(Category.GAMES),
             onlyWishList = false
         ),
         onFilterCategory = {},

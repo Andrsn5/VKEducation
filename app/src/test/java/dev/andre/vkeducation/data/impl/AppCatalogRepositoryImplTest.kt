@@ -9,7 +9,6 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogDao
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntityMapper
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogWithWish
-import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
 import dev.andre.vkeducation.presentation.data.local.wishlist.WishListEntity
 import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
@@ -37,7 +36,6 @@ class AppCatalogRepositoryImplTest {
     private val entityMapper: AppCatalogEntityMapper = mock()
     private val sharedPref: SharedPreferences = mock()
     private val editor: SharedPreferences.Editor = mock()
-    private val wishlistDao: WishListDao = mock()
 
     class TestDispatchers : CoroutineDispatchers {
         override fun io() = Dispatchers.Unconfined
@@ -59,7 +57,6 @@ class AppCatalogRepositoryImplTest {
             entityMapper,
             sharedPref,
             dispatchers,
-            wishlistDao
         )
     }
 
@@ -116,7 +113,7 @@ class AppCatalogRepositoryImplTest {
         val entity = AppCatalogEntity(
             id = "1",
             name = "App",
-            category = Category.ИГРЫ,
+            category = Category.GAMES,
             iconUrl = "",
             description = ""
         )
@@ -138,7 +135,7 @@ class AppCatalogRepositoryImplTest {
                 AppCatalog(
                     id = "1",
                     name = "App",
-                    category = Category.ИГРЫ,
+                    category = Category.GAMES,
                     iconUrl = "",
                     description = "",
                     isInWishList = false

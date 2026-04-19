@@ -2,8 +2,8 @@ package dev.andre.vkeducation.data.mapper
 
 import dev.andre.vkeducation.presentation.data.mapper.CategoryMapper
 import dev.andre.vkeducation.presentation.domain.model.Category
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.assertEquals
 
 class CategoryMapperTest {
@@ -13,29 +13,29 @@ class CategoryMapperTest {
     @Test
     fun `maps all known category to domain`() {
         val expectedMaps = mapOf(
-            "Игры" to Category.ИГРЫ,
-            "Производительность" to Category.ПРОИЗВОДИТЕЛЬНОСТЬ,
-            "Здоровье и фитнес" to Category.ЗДОРОВЬЕ_И_ФИТНЕС,
-            "Фото и видео" to Category.ФОТО_И_ВИДЕО,
-            "Еда и напитки" to Category.ЕДА_И_НАПИТКИ,
-            "Образование" to Category.ОБРАЗОВАНИЕ,
-            "Образ жизни" to Category.ОБРАЗ_ЖИЗНИ,
-            "Шопинг" to Category.ШОПИНГ,
-            "Новости" to Category.НОВОСТИ,
-            "Музыка" to Category.МУЗЫКА,
-            "Финансы" to Category.ФИНАНСЫ,
-            "Утилиты" to Category.УТИЛИТЫ,
-            "Навигация" to Category.НАВИГАЦИЯ,
-            "Общение" to Category.ОБЩЕНИЕ,
-            "Бизнес" to Category.БИЗНЕС,
-            "Погода" to Category.ПОГОДА,
-            "Развлечения" to Category.РАЗВЛЕЧЕНИЯ,
-            "Книги и справочники" to Category.КНИГИ_И_СПРАВОЧНИКИ
+            "Игры" to Category.GAMES,
+            "Производительность" to Category.PRODUCTIVITY,
+            "Здоровье и фитнес" to Category.HEALTH_AND_FITNESS,
+            "Фото и видео" to Category.PHOTO_AND_VIDEO,
+            "Еда и напитки" to Category.FOOD_AND_DRINKS,
+            "Образование" to Category.EDUCATION,
+            "Образ жизни" to Category.LIFESTYLE,
+            "Шопинг" to Category.SHOPPING,
+            "Новости" to Category.NEWS,
+            "Музыка" to Category.MUSIC,
+            "Финансы" to Category.FINANCE,
+            "Утилиты" to Category.UTILITIES,
+            "Навигация" to Category.NAVIGATION,
+            "Общение" to Category.COMMUNICATION,
+            "Бизнес" to Category.BUSINESS,
+            "Погода" to Category.WEATHER,
+            "Развлечения" to Category.ENTERTAINMENT,
+            "Книги и справочники" to Category.BOOKS_AND_REFERENCE
         )
 
         expectedMaps.forEach { (inputValues, expectedValues) ->
             val actual = mapper.toDomain(inputValues)
-            assertEquals(expectedValues,actual,"Failed for input: $inputValues")
+            assertEquals(expectedValues, actual, "Failed for input: $inputValues")
         }
     }
 
@@ -57,10 +57,10 @@ class CategoryMapperTest {
     @Test
     fun `handles case sensitivity in category names`() {
         val variations = listOf(
-            "игры" to Category.ИГРЫ,
-            "ИГРЫ" to Category.ИГРЫ,
-            "Игры" to Category.ИГРЫ,
-            "иГрЫ" to Category.ИГРЫ
+            "игры" to Category.GAMES,
+            "ИГРЫ" to Category.GAMES,
+            "Игры" to Category.GAMES,
+            "иГрЫ" to Category.GAMES
         )
 
         variations.forEach { (input, expected) ->

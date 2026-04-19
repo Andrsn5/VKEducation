@@ -5,7 +5,7 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
 import org.junit.Test
-import kotlin.test.assertEquals
+import junit.framework.TestCase.assertEquals
 
 class AppCatalogEntityMapperTest {
 
@@ -14,7 +14,7 @@ class AppCatalogEntityMapperTest {
     private fun createDomain(
         id: String = "1",
         name: String = "App",
-        category: Category = Category.ИГРЫ,
+        category: Category = Category.GAMES,
         iconUrl: String = "url",
         description: String = "desc",
         isInWishList: Boolean = false
@@ -30,7 +30,7 @@ class AppCatalogEntityMapperTest {
     private fun createEntity(
         id: String = "1",
         name: String = "App",
-        category: Category = Category.ИГРЫ,
+        category: Category = Category.GAMES,
         iconUrl: String = "url",
         description: String = "desc"
     ) = AppCatalogEntity(
@@ -49,7 +49,7 @@ class AppCatalogEntityMapperTest {
 
         assertEquals("1", result.id)
         assertEquals("App", result.name)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals("url", result.iconUrl)
         assertEquals("desc", result.description)
     }
@@ -62,7 +62,7 @@ class AppCatalogEntityMapperTest {
 
         assertEquals("1", result.id)
         assertEquals("App", result.name)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals("url", result.iconUrl)
         assertEquals("desc", result.description)
     }
@@ -73,7 +73,7 @@ class AppCatalogEntityMapperTest {
         val original = createDomain(
             id = "123",
             name = "Test App",
-            category = Category.ФИНАНСЫ,
+            category = Category.FINANCE,
             iconUrl = "https://example.com/icon.png",
             description = "Test description"
         )
@@ -91,11 +91,11 @@ class AppCatalogEntityMapperTest {
     @Test
     fun `maps all categories correctly`() {
         val categories = listOf(
-            Category.ИГРЫ,
-            Category.ОБРАЗОВАНИЕ,
-            Category.ФИНАНСЫ,
-            Category.ЗДОРОВЬЕ_И_ФИТНЕС,
-            Category.НОВОСТИ
+            Category.GAMES,
+            Category.EDUCATION,
+            Category.FINANCE,
+            Category.HEALTH_AND_FITNESS,
+            Category.NEWS
         )
 
         categories.forEach { category ->

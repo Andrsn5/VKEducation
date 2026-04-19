@@ -5,7 +5,7 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
 import org.junit.Test
-import kotlin.test.assertEquals
+import junit.framework.TestCase.assertEquals
 import kotlin.test.assertFalse
 
 class EntityMapperResilienceTest {
@@ -15,7 +15,7 @@ class EntityMapperResilienceTest {
     private fun createDomain(
         id: String = "1",
         name: String = "App",
-        category: Category = Category.ИГРЫ,
+        category: Category = Category.GAMES,
         iconUrl: String = "url",
         description: String = "desc",
         isInWishList: Boolean = false
@@ -31,7 +31,7 @@ class EntityMapperResilienceTest {
     private fun createEntity(
         id: String = "1",
         name: String = "App",
-        category: Category = Category.ИГРЫ,
+        category: Category = Category.GAMES,
         iconUrl: String = "url",
         description: String = "desc"
     ) = AppCatalogEntity(
@@ -66,7 +66,7 @@ class EntityMapperResilienceTest {
         val original = createDomain(
             id = "123",
             name = "Test App",
-            category = Category.ФИНАНСЫ,
+            category = Category.FINANCE,
             iconUrl = "https://example.com/icon.png",
             description = "Test description",
             isInWishList = true

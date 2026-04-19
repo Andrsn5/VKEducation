@@ -17,7 +17,7 @@ class AppDetailsEntityMapperTest {
             id = "1",
             name = "App",
             developer = "Dev",
-            category = Category.ИГРЫ,
+            category = Category.GAMES,
             ageRating = 12,
             size = 50.5f,
             iconUrl = "url",
@@ -30,7 +30,7 @@ class AppDetailsEntityMapperTest {
         assertEquals("1", result.id)
         assertEquals("App", result.name)
         assertEquals("Dev", result.developer)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals(12, result.ageRating)
         assertEquals(50.5f, result.size)
         assertEquals("url", result.iconUrl)
@@ -44,7 +44,7 @@ class AppDetailsEntityMapperTest {
             id = "1",
             name = "App",
             developer = "Dev",
-            category = Category.ИГРЫ,
+            category = Category.GAMES,
             ageRating = 12,
             size = 50.5f,
             iconUrl = "url",
@@ -57,7 +57,7 @@ class AppDetailsEntityMapperTest {
         assertEquals("1", result.id)
         assertEquals("App", result.name)
         assertEquals("Dev", result.developer)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals(12, result.ageRating)
         assertEquals(50.5f, result.size)
         assertEquals("url", result.iconUrl)
@@ -71,7 +71,7 @@ class AppDetailsEntityMapperTest {
             id = "1",
             name = "App",
             developer = "Dev",
-            category = Category.ОБРАЗОВАНИЕ,
+            category = Category.EDUCATION,
             ageRating = 3,
             size = 25.0f,
             iconUrl = "url",
@@ -85,7 +85,7 @@ class AppDetailsEntityMapperTest {
         assertEquals("1", result.id)
         assertEquals("App", result.name)
         assertEquals("Dev", result.developer)
-        assertEquals(Category.ОБРАЗОВАНИЕ, result.category)
+        assertEquals(Category.EDUCATION, result.category)
         assertEquals(3, result.ageRating)
         assertEquals(25.0f, result.size)
         assertEquals("url", result.iconUrl)
@@ -99,7 +99,7 @@ class AppDetailsEntityMapperTest {
             id = "app123",
             name = "Super App",
             developer = "Super Dev",
-            category = Category.ФИНАНСЫ,
+            category = Category.FINANCE,
             ageRating = 18,
             size = 100.0f,
             iconUrl = "https://example.com/icon.png",
@@ -127,7 +127,7 @@ class AppDetailsEntityMapperTest {
             id = "1",
             name = "App",
             developer = "Dev",
-            category = Category.ЗДОРОВЬЕ_И_ФИТНЕС,
+            category = Category.HEALTH_AND_FITNESS,
             ageRating = 6,
             size = 75.3f,
             iconUrl = "url",
@@ -143,11 +143,11 @@ class AppDetailsEntityMapperTest {
     @Test
     fun `maps all categories correctly`() {
         val categories = listOf(
-            Category.ИГРЫ,
-            Category.ОБРАЗОВАНИЕ,
-            Category.ФИНАНСЫ,
-            Category.ЗДОРОВЬЕ_И_ФИТНЕС,
-            Category.НОВОСТИ
+            Category.GAMES,
+            Category.EDUCATION,
+            Category.FINANCE,
+            Category.HEALTH_AND_FITNESS,
+            Category.NEWS
         )
 
         categories.forEach { category ->

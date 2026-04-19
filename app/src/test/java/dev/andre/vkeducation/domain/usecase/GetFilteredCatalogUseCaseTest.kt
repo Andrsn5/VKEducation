@@ -30,7 +30,7 @@ class GetFilteredCatalogUseCaseTest {
     @Test
     fun `returns all when no filters`() = runTest {
         val list = listOf(
-            AppCatalog("1", "App", Category.ИГРЫ, "", "", false)
+            AppCatalog("1", "App", Category.GAMES, "", "", false)
         )
 
         whenever(repository.observeAppCatalog())
@@ -46,8 +46,8 @@ class GetFilteredCatalogUseCaseTest {
     @Test
     fun `filters by category`() = runTest {
         val list = listOf(
-            AppCatalog("1", "App", Category.ИГРЫ, "", "", false),
-            AppCatalog("2", "App2", Category.КНИГИ_И_СПРАВОЧНИКИ, "", "", false)
+            AppCatalog("1", "App", Category.GAMES, "", "", false),
+            AppCatalog("2", "App2", Category.BOOKS_AND_REFERENCE, "", "", false)
         )
 
         whenever(repository.observeAppCatalog())
@@ -55,7 +55,7 @@ class GetFilteredCatalogUseCaseTest {
 
         val result = useCase(
             GetFilteredCatalogUseCase.Params(
-                category = setOf(Category.ИГРЫ)
+                category = setOf(Category.GAMES)
             )
         ).first()
 
@@ -65,8 +65,8 @@ class GetFilteredCatalogUseCaseTest {
     @Test
     fun `filters by wishlist`() = runTest {
         val list = listOf(
-            AppCatalog("1", "App", Category.ИГРЫ, "", "", true),
-            AppCatalog("2", "App2", Category.ИГРЫ, "", "", false)
+            AppCatalog("1", "App", Category.GAMES, "", "", true),
+            AppCatalog("2", "App2", Category.GAMES, "", "", false)
         )
 
         whenever(repository.observeAppCatalog())
@@ -84,9 +84,9 @@ class GetFilteredCatalogUseCaseTest {
     @Test
     fun `filters by category and wishlist`() = runTest {
         val list = listOf(
-            AppCatalog("1", "App", Category.ИГРЫ, "", "", true),
-            AppCatalog("2", "App2", Category.ИГРЫ, "", "", false),
-            AppCatalog("3", "App3", Category.КНИГИ_И_СПРАВОЧНИКИ, "", "", true)
+            AppCatalog("1", "App", Category.GAMES, "", "", true),
+            AppCatalog("2", "App2", Category.GAMES, "", "", false),
+            AppCatalog("3", "App3", Category.BOOKS_AND_REFERENCE, "", "", true)
         )
 
         whenever(repository.observeAppCatalog())
@@ -94,21 +94,21 @@ class GetFilteredCatalogUseCaseTest {
 
         val result = useCase(
             GetFilteredCatalogUseCase.Params(
-                category = setOf(Category.ИГРЫ),
+                category = setOf(Category.GAMES),
                 onlyWishList = true
             )
         ).first()
 
         assertEquals(1, result.size)
-        assertTrue(result.first().category == Category.ИГРЫ)
+        assertTrue(result.first().category == Category.GAMES)
         assertTrue(result.first().isInWishList)
     }
 
     @Test
     fun `returns empty list when nothing matches filters`() = runTest {
         val list = listOf(
-            AppCatalog("1", "App", Category.ИГРЫ, "", "", false),
-            AppCatalog("2", "App2", Category.КНИГИ_И_СПРАВОЧНИКИ, "", "", false)
+            AppCatalog("1", "App", Category.GAMES, "", "", false),
+            AppCatalog("2", "App2", Category.BOOKS_AND_REFERENCE, "", "", false)
         )
 
         whenever(repository.observeAppCatalog())
@@ -116,7 +116,7 @@ class GetFilteredCatalogUseCaseTest {
 
         val result = useCase(
             GetFilteredCatalogUseCase.Params(
-                category = setOf(Category.ФОТО_И_ВИДЕО),
+                category = setOf(Category.PHOTO_AND_VIDEO),
                 onlyWishList = true
             )
         ).first()

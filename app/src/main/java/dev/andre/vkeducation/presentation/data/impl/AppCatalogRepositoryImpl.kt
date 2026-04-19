@@ -14,7 +14,6 @@ import javax.inject.Inject
 import androidx.core.content.edit
 import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class AppCatalogRepositoryImpl @Inject constructor (

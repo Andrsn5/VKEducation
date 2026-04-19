@@ -35,7 +35,7 @@ class AppCatalogMapperTest {
 
         assertEquals("1", result.id)
         assertEquals("App", result.name)
-        assertEquals(Category.ИГРЫ, result.category)
+        assertEquals(Category.GAMES, result.category)
         assertEquals("url", result.iconUrl)
         assertEquals("desc", result.description)
     }
@@ -54,10 +54,10 @@ class AppCatalogMapperTest {
     @Test
     fun `maps different categories correctly`() {
         val categories = listOf(
-            "Игры" to Category.ИГРЫ,
-            "Финансы" to Category.ФИНАНСЫ,
-            "Здоровье и фитнес" to Category.ЗДОРОВЬЕ_И_ФИТНЕС,
-            "Образование" to Category.ОБРАЗОВАНИЕ
+            "Игры" to Category.GAMES,
+            "Финансы" to Category.FINANCE,
+            "Здоровье и фитнес" to Category.HEALTH_AND_FITNESS,
+            "Образование" to Category.EDUCATION
         )
 
         categories.forEach { (input, expected) ->
