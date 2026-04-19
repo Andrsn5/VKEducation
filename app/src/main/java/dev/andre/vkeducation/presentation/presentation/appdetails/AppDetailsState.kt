@@ -8,7 +8,6 @@ sealed interface AppDetailsState{
     data object Offline: AppDetailsState
     data class Content(
         val app: App?,
-        val isInWishList: Boolean,
         val status: DownloadStatus = DownloadStatus.Prepare,
         val isOnline: Boolean = true
         ): AppDetailsState

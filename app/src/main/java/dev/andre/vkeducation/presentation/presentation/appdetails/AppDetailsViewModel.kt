@@ -42,7 +42,6 @@ class AppDetailsViewModel @Inject constructor (
                 ){app , isOnline->
                     _state.update { AppDetailsState.Content(
                         app = app,
-                        isInWishList = app.isInWishList,
                         isOnline = isOnline
                     ) }
                 }.catch { e->
@@ -68,7 +67,8 @@ class AppDetailsViewModel @Inject constructor (
             _state.update { currentState ->
                 if (currentState is AppDetailsState.Content) {
                     currentState.copy(
-                        isInWishList = !currentState.isInWishList
+                        app = currentState.app?.copy(
+                            isInWishList = !currentState.app.isInWishList)
                     )
                 } else currentState
             }

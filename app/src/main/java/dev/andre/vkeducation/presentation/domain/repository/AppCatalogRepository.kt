@@ -8,5 +8,4 @@ interface AppCatalogRepository {
 
     fun observeAppCatalog() : Flow<List<AppCatalog>>
 
-    suspend fun toggleWishList(id: String)
 }

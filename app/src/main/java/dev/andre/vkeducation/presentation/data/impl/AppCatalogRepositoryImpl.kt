@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import androidx.core.content.edit
 import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
-import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -25,7 +24,6 @@ class AppCatalogRepositoryImpl @Inject constructor (
     private val appCatalogMapper: AppCatalogEntityMapper,
     private val sharedPref: SharedPreferences,
     private val dispatchers: CoroutineDispatchers,
-    private val wishlistDao: WishListDao
 ): AppCatalogRepository {
     companion object{
         private const val CACHE_DURATION_MS = 1000L
@@ -61,9 +59,5 @@ class AppCatalogRepositoryImpl @Inject constructor (
                 )
             }
         }.flowOn(dispatchers.io())
-    }
-
-    override suspend fun toggleWishList(id: String) {
-        wishlistDao.toggle(id)
     }
 }

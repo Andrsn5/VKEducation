@@ -49,12 +49,7 @@ class AppCatalogViewModel @Inject constructor(
         viewModelScope.launch {
             _isRefreshing.value = true
 
-            runCatching {
-                repository.getAll()
-            }.onFailure { e ->
-                if (e is CancellationException) throw e
-                _state.update { AppCatalogState.Error }
-            }
+            observeApps()
 
             _isRefreshing.value = false
         }

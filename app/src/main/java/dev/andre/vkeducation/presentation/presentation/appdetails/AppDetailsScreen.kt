@@ -68,7 +68,7 @@ fun AppDetailsScreen(
                     Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
                 },
                 onClickWishList = onClickWishList,
-                isInWishList = state.isInWishList
+                isInWishList = appDetails.isInWishList
             )
 
             AnimatedVisibility(visible = !state.isOnline) {
@@ -182,8 +182,8 @@ private fun Preview() {
                     screenshotUrlList = emptyList(),
                     iconUrl = "",
                     description = "Социальная сеть",
+                    isInWishList = false
                 ),
-                isInWishList = false,
                 isOnline = false,
                 status = DownloadStatus.Prepare,
             ),

@@ -9,9 +9,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
 
-class NetworkMonitorImpl @Inject constructor(
+class NetworkMonitorImpl(
     private val connectivityManager: ConnectivityManager
 ) : NetworkMonitor {
     override val isOnline: Flow<Boolean> = callbackFlow {
