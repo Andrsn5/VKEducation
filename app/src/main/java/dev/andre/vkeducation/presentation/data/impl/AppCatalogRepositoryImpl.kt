@@ -26,14 +26,14 @@ class AppCatalogRepositoryImpl @Inject constructor (
     private val dispatchers: CoroutineDispatchers,
 ): AppCatalogRepository {
     companion object{
-        private const val CACHE_DURATION_MS = 1000L
+        private const val EXPIRES_IN_MS = 1000L
         private const val KEY_LAST_UPDATED = "last_updated"
     }
 
     override suspend fun getAll() = withContext(dispatchers.io()){
         val lastUpdate = sharedPref.getLong(KEY_LAST_UPDATED,0)
         val now = System.currentTimeMillis()
-        if (now - lastUpdate < CACHE_DURATION_MS){
+        if (now - lastUpdate < EXPIRES_IN_MS){
              return@withContext
         }
 
@@ -58,6 +58,6 @@ class AppCatalogRepositoryImpl @Inject constructor (
                     isInWishList = item.wishList.isNotEmpty()
                 )
             }
-        }.flowOn(dispatchers.io())
+        }
     }
 }
