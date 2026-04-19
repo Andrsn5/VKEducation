@@ -16,7 +16,7 @@ fun AppDetailsNotFoundScreen(
 ) {
     Column(modifier.fillMaxSize()) {
         Toolbar(
-            onBackClick = onBackClick, onShareClick = onBackClick
+            onBackClick = onBackClick, onShareClick = onBackClick , onClickWishList = onBackClick, isInWishList = false
         )
 
         Box(
