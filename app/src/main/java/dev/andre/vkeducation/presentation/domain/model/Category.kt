@@ -23,8 +23,11 @@ enum class Category(val value: String) {
 
     companion object {
         fun from(value: String): Category {
-            return entries.firstOrNull { it.value == value }
-                ?: UNKNOWN
+            val normalized = value.trim().lowercase()
+
+            return entries.firstOrNull {
+                it.value.trim().lowercase() == normalized
+            } ?: UNKNOWN
         }
     }
 }

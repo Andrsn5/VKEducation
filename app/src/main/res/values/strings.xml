@@ -8,7 +8,13 @@
     <string name="app_details_size">Размер</string>
 
     <string name="install">Установить</string>
+    <string name="begin">Начало установки</string>
+    <string name="downloading">Скачивание "%1$s"</string>
+    <string name="ready">Установлено</string>
+    <string name="error">Ошибка, повторите позже</string>
 
+    <string name="open">Открыть</string>
+    <string name="delete">Удалить</string>
     <string name="app_details_screenshots">Скриншоты</string>
 
     <string name="app_details_description">Описание приложения</string>
@@ -31,4 +37,11 @@
 
     <string name="app_catalog_no_loaded">Ошибка загрузки</string>
 
+    <string name="filter">Фильтр</string>
+    <string name="onlyWishList">Только избранное</string>
+    <string name="category">Категории</string>
+    <string name="resert">Сбросить</string>
+
+    <string name="nonetwork">Нет подключения к интренету</string>
+    <string name="repeat_connectiong">Проверьте соединение и попробуйте снова</string>
 </resources>

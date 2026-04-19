@@ -1,4 +1,4 @@
-package dev.andre.vkeducation.presentation.data.module
+package dev.andre.vkeducation.presentation.di
 
 import dagger.Binds
 import dagger.Module
