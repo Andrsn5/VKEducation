@@ -8,10 +8,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppCatalogDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAppCatalog(appCatalogEntity: List<AppCatalogEntity>)
 
     @Query("SELECT * FROM app_catalog")
-    fun getAll() : Flow<List<AppCatalogEntity>?>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAppCatalog(appCatalogEntity: List<AppCatalogEntity>)
+    fun observeAppCatalogWithWishList(): Flow<List<AppCatalogWithWish>?>
 }

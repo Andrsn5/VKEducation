@@ -18,14 +18,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.andre.vkeducation.R
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCatalogTopBar(
-    onRefreshClick: () -> Unit,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    onShowMenuClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -34,6 +34,7 @@ fun AppCatalogTopBar(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = stringResource(R.string.app_logo_description),
                     modifier = Modifier.clickable{
+                        Timber.d("Icon clicked")
                        onIconClick()
                     }
                 )
@@ -49,7 +50,7 @@ fun AppCatalogTopBar(
             titleContentColor = MaterialTheme.colorScheme.secondary
         ),
         actions = {
-            IconButton(onClick = onRefreshClick) {
+            IconButton(onClick = onShowMenuClick) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = stringResource(R.string.app_catalog_buttom_decription),

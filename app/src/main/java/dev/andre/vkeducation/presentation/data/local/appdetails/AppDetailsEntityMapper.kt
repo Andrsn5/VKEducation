@@ -26,7 +26,7 @@ class AppDetailsEntityMapper @Inject constructor() {
         size = entity.size,
         iconUrl = entity.iconUrl,
         screenshotUrlList = entity.screenshotUrlList,
-        description = entity.description
+        description = entity.description,
     )
 
 }

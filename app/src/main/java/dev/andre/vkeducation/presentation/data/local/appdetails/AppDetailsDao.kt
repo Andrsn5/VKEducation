@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDetailsDao {
-    @Query("SELECT * FROM app_details WHERE id = :id")
-    fun getAppDetails(id : String) : Flow<AppDetailsEntity?>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAppDetails(appDetailsEntity: AppDetailsEntity)
+
+    @Query("SELECT * FROM app_details WHERE id = :id")
+    fun observeDetailsWithWishlist(id : String) : Flow<AppDetailsWithWish?>
 }

@@ -10,5 +10,5 @@ data class AppCatalogEntity (
     val name: String,
     val category: Category,
     val iconUrl: String,
-    val description: String
+    val description: String,
 )

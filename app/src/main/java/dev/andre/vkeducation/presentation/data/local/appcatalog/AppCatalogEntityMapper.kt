@@ -9,7 +9,7 @@ class AppCatalogEntityMapper @Inject constructor() {
         name = entity.name,
         category = entity.category,
         iconUrl = entity.iconUrl,
-        description = entity.description
+        description = entity.description,
     )
 
     fun toEntity(domain: AppCatalog) : AppCatalogEntity = AppCatalogEntity(
@@ -19,4 +19,6 @@ class AppCatalogEntityMapper @Inject constructor() {
         iconUrl = domain.iconUrl,
         description = domain.description
     )
+
+
 }

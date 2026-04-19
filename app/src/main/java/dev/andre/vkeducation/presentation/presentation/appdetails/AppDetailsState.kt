@@ -5,5 +5,10 @@ import dev.andre.vkeducation.presentation.domain.model.App
 sealed interface AppDetailsState{
     data object Loading: AppDetailsState
     data object Error: AppDetailsState
-    data class Content(val app: App?): AppDetailsState
+    data object Offline: AppDetailsState
+    data class Content(
+        val app: App?,
+        val status: DownloadStatus = DownloadStatus.Prepare,
+        val isOnline: Boolean = true
+        ): AppDetailsState
 }

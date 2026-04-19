@@ -5,5 +5,6 @@ data class AppCatalog(
     val name: String,
     val category: Category,
     val iconUrl: String,
-    val description: String
+    val description: String,
+    val isInWishList: Boolean = false
 )

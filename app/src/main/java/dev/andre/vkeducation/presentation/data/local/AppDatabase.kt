@@ -7,9 +7,11 @@ import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogDao
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntity
 import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsDao
 import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsEntity
+import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
+import dev.andre.vkeducation.presentation.data.local.wishlist.WishListEntity
 
 @Database(
-    entities = [AppDetailsEntity::class, AppCatalogEntity::class],
+    entities = [AppDetailsEntity::class, AppCatalogEntity::class, WishListEntity::class],
     version = 1
 )
 
@@ -17,6 +19,7 @@ import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDetailsDao(): AppDetailsDao
     abstract fun appCatalogDao(): AppCatalogDao
+    abstract fun wishListDao(): WishListDao
 
 
     companion object{
