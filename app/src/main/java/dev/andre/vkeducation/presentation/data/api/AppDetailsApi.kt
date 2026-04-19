@@ -5,7 +5,11 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class AppDetailsApi @Inject constructor() {
-    suspend fun get(id:String): AppDetailsDto? {
+
+    suspend fun getApk(id: String){
+        delay(2000)
+    }
+    suspend fun getAppDetails(id:String): AppDetailsDto? {
         delay(2000)
         val app = getById(id, getApp())
         return app

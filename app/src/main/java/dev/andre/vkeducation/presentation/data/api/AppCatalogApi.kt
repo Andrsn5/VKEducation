@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AppCatalogApi @Inject constructor() {
 
-    suspend fun getAll() : List<AppCatalogDto>? {
+    suspend fun getCatalog() : List<AppCatalogDto>? {
         delay(2000)
         return getCatalogApps()
     }

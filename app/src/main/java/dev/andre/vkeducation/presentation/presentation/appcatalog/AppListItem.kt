@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,13 +34,13 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.model.Category
-import dev.andre.vkeducation.presentation.presentation.appdetails.getCategoryText
 import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppListItem(
     app: AppCatalog,
     onClick: () -> Unit,
+    onToggleWishList: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -67,13 +73,33 @@ fun AppListItem(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = app.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row (verticalAlignment = Alignment.CenterVertically){
+                    Text(
+                        text = app.name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    if (!app.isInWishList){
+                        IconButton(onClick = { onToggleWishList(app.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }else{
+                        IconButton(onClick = { onToggleWishList(app.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(4.dp))
 
@@ -89,7 +115,7 @@ fun AppListItem(
 
 
                 Text(
-                    text = getCategoryText(app.category),
+                    text = app.category.name,
                     fontSize = 14.sp,
                     color = Color.Gray,
                     maxLines = 1,
@@ -108,11 +134,12 @@ private fun PreviewAppListItem() {
             app = AppCatalog(
                 id = "1",
                 name = "Гильдия Героев: Экшен ММО РПГ",
-                category = Category.GAME,
+                category = Category.GAMES,
                 iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
                 description = "Легендарный рейд героев в Фэнтези РПГ"
             ),
-            onClick = {}
+            onClick = {},
+            onToggleWishList = {},
         )
     }
 }

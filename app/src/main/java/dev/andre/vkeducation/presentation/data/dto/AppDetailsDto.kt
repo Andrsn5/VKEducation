@@ -1,5 +1,8 @@
 package dev.andre.vkeducation.presentation.data.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AppDetailsDto(
     val id: String,
     val name: String,
@@ -8,6 +11,6 @@ data class AppDetailsDto(
     val ageRating: Int,
     val size: Float,
     val iconUrl: String,
-    val screenshotUrlList: List<String>,
+    val screenshotUrlList: List<String> = emptyList(),
     val description: String,
 )
