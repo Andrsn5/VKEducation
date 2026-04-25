@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.andre.vkeducation.R
 import dev.andre.vkeducation.presentation.domain.model.Category
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
+import dev.andre.vkeducation.presentation.domain.repository.DownloadsListRepository
 import dev.andre.vkeducation.presentation.domain.repository.NetworkMonitor
 import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
 import dev.andre.vkeducation.presentation.domain.usecase.GetFilteredCatalogUseCase
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class AppCatalogViewModel @Inject constructor(
     private val repository: AppCatalogRepository,
     private val wishListRepository: WishListRepository,
+    private val downloadsListRepository: DownloadsListRepository,
     private val getFilteredCatalogUseCase: GetFilteredCatalogUseCase,
     private val networkMonitor: NetworkMonitor,
     private val savedStateHandle: SavedStateHandle
@@ -137,6 +139,21 @@ class AppCatalogViewModel @Inject constructor(
         }
     }
 
+    fun toggleDownloads(id: String) {
+        viewModelScope.launch {
+            _state.update { currentState ->
+                if (currentState is AppCatalogState.Content) {
+                    currentState.copy(
+                        appCatalog = currentState.appCatalog.map { app ->
+                            if (app.id == id) app.copy(isDownload = !app.isDownload) else app
+                        }
+                    )
+                } else currentState
+            }
+            downloadsListRepository.toggle(id)
+        }
+    }
+
     fun filterByCategory(category: Category){
         _filterParams.update {  params ->
             val updated = if (category in params.category) {
@@ -151,6 +168,12 @@ class AppCatalogViewModel @Inject constructor(
     fun filterByWishList(onlyWishList: Boolean){
         _filterParams.update {
             it.copy(onlyWishList = onlyWishList)
+        }
+    }
+
+    fun filterByDownloads(onlyDownloads: Boolean){
+        _filterParams.update {
+            it.copy(onlyDownloads = onlyDownloads)
         }
     }
 

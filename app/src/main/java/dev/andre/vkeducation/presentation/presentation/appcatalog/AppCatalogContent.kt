@@ -31,6 +31,7 @@ fun AppCatalogContent(
     scrollIndex: Int,
     listState: LazyListState,
     onToggleWishList: (String) -> Unit,
+    onToggleDownloads: (String) -> Unit,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -68,6 +69,7 @@ fun AppCatalogContent(
                         app = app,
                         onClick = { onAppClick(app) },
                         onToggleWishList = onToggleWishList,
+                        onToggleDownloads = onToggleDownloads,
                     )
                 }
             }

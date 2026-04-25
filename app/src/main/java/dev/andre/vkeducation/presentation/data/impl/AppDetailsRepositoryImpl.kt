@@ -1,23 +1,15 @@
 package dev.andre.vkeducation.presentation.data.impl
 
 import dev.andre.vkeducation.presentation.common.CoroutineDispatchers
-import dev.andre.vkeducation.presentation.data.api.ApiService
 import dev.andre.vkeducation.presentation.data.api.AppDetailsApi
 import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsDao
 import dev.andre.vkeducation.presentation.data.local.appdetails.AppDetailsEntityMapper
-import dev.andre.vkeducation.presentation.data.local.wishlist.WishListDao
 import dev.andre.vkeducation.presentation.data.mapper.AppDetailsMapper
 import dev.andre.vkeducation.presentation.domain.model.App
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
-import dev.andre.vkeducation.presentation.presentation.appdetails.DownloadStatus
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -41,36 +33,14 @@ class AppDetailsRepositoryImpl @Inject constructor(
     }
 
     override fun observeAppDetails(id: String): Flow<App> {
-        return dao.observeDetailsWithWishlist(id).filterNotNull().map { item ->
-            entityMapper.toDomain(item.app).copy(
-                isInWishList = item.wishList.isNotEmpty()
+        return combine(
+            dao.observeDetailsWithWishlist(id).filterNotNull(),
+            dao.observeDetailsWithDownloads(id).filterNotNull()
+        ) { wishItem, downloadsItem ->
+            entityMapper.toDomain(wishItem.app).copy(
+                isInWishList = wishItem.wishList.isNotEmpty(),
+                isDownload = downloadsItem.downloadsList.isNotEmpty()
             )
         }
     }
-
-    override fun getApk(id: String): Flow<DownloadStatus> {
-        return flow {
-            emit(DownloadStatus.Prepare)
-
-            api.getApk(id)
-            emit(DownloadStatus.Started)
-
-            emitAll(
-                processeApk().map {
-                    DownloadStatus.Downloading(it)
-                }
-                )
-
-            emit(DownloadStatus.Installed)
-        }.catch {
-            emit(DownloadStatus.Error)
-        }
-    }
-
-    private fun processeApk(): Flow<Long> = flow {
-        for (i in 1 .. 100){
-            emit(i.toLong())
-            delay(100L)
-        }
-    }.flowOn(dispatchers.io())
 }

@@ -19,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ fun AppDetailsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onClickWishList: () -> Unit,
+    onToggleDownloads: () -> Unit,
     onDownload: () -> Unit,
     onDelete: () -> Unit,
 ) {
@@ -53,6 +55,12 @@ fun AppDetailsScreen(
 
     val downloadState = state.status
     val appDetails = state.app
+
+    LaunchedEffect(downloadState) {
+        if (downloadState is DownloadStatus.Installed) {
+            onToggleDownloads()
+        }
+    }
 
     if (appDetails == null) {
         AppDetailsNotFoundScreen(
@@ -84,7 +92,7 @@ fun AppDetailsScreen(
             )
 
             Spacer(Modifier.height(16.dp))
-            if (downloadState is DownloadStatus.Installed) {
+            if (appDetails.isDownload) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,7 +108,10 @@ fun AppDetailsScreen(
                         Text(text = stringResource(R.string.open))
                     }
                     Button(
-                        onClick = { onDelete() },
+                        onClick = {
+                            onToggleDownloads()
+                            onDelete()
+                        },
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(text = stringResource(R.string.delete))
@@ -190,6 +201,7 @@ private fun Preview() {
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             onClickWishList = {},
+            onToggleDownloads = {},
             onDownload = {},
             onDelete = {},
         )

@@ -30,6 +30,7 @@ fun AppDetailsRoute(
                 modifier = modifier,
                 onBackClick = onBackClick,
                 onClickWishList = { viewModel.toggleWishList(appId) },
+                onToggleDownloads = { viewModel.toggleDownloads(appId) },
                 onDownload = { viewModel.download(appId) },
                 onDelete = { viewModel.delete(appId) },
             )

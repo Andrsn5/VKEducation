@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import dev.andre.vkeducation.presentation.domain.repository.AppDetailsRepository
+import dev.andre.vkeducation.presentation.domain.repository.DownloadsListRepository
 import dev.andre.vkeducation.presentation.domain.repository.NetworkMonitor
 import dev.andre.vkeducation.presentation.domain.repository.WishListRepository
 import kotlinx.coroutines.Job
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class AppDetailsViewModel @Inject constructor (
     private val appDetailsRepository: AppDetailsRepository,
     private val wishListRepository: WishListRepository,
+    private val downloadsListRepository: DownloadsListRepository,
     private val networkMonitor: NetworkMonitor
 ): ViewModel() {
 
@@ -76,10 +78,24 @@ class AppDetailsViewModel @Inject constructor (
         }
     }
 
+    fun toggleDownloads(id: String){
+        viewModelScope.launch {
+            _state.update { currentState ->
+                if (currentState is AppDetailsState.Content) {
+                    currentState.copy(
+                        app = currentState.app?.copy(
+                            isDownload = !currentState.app.isDownload)
+                    )
+                } else currentState
+            }
+            downloadsListRepository.toggle(id)
+        }
+    }
+
     fun download(id: String){
         downloadingApk?.cancel()
         downloadingApk = viewModelScope.launch {
-            appDetailsRepository.getApk(id).collect { downloadState->
+            downloadsListRepository.getApk(id).collect { downloadState->
                 _state.update { currentState->
                     if (currentState is AppDetailsState.Content){
                         currentState.copy( status = downloadState)
