@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
@@ -41,6 +42,7 @@ fun AppListItem(
     app: AppCatalog,
     onClick: () -> Unit,
     onToggleWishList: (String) -> Unit,
+    onToggleDownloads: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -113,14 +115,24 @@ fun AppListItem(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-
-                Text(
-                    text = app.category.name,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = app.category.name,
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (app.isDownload){
+                        IconButton(onClick = { onToggleDownloads(app.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Done,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -140,6 +152,7 @@ private fun PreviewAppListItem() {
             ),
             onClick = {},
             onToggleWishList = {},
+            onToggleDownloads = {},
         )
     }
 }

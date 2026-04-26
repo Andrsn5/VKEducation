@@ -39,6 +39,7 @@
 
     <string name="filter">Фильтр</string>
     <string name="onlyWishList">Только избранное</string>
+    <string name="onlyDownloads">Только скачанное</string>
     <string name="category">Категории</string>
     <string name="resert">Сбросить</string>
 

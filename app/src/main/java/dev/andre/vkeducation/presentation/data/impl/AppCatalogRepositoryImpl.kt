@@ -2,19 +2,18 @@ package dev.andre.vkeducation.presentation.data.impl
 
 import android.content.SharedPreferences
 import dev.andre.vkeducation.presentation.common.CoroutineDispatchers
-import dev.andre.vkeducation.presentation.data.api.ApiService
+import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogDao
 import dev.andre.vkeducation.presentation.data.local.appcatalog.AppCatalogEntityMapper
 import dev.andre.vkeducation.presentation.data.mapper.AppCatalogMapper
 import dev.andre.vkeducation.presentation.domain.model.AppCatalog
 import dev.andre.vkeducation.presentation.domain.repository.AppCatalogRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import androidx.core.content.edit
-import dev.andre.vkeducation.presentation.data.api.AppCatalogApi
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 
 class AppCatalogRepositoryImpl @Inject constructor (
     private val api: AppCatalogApi,
@@ -51,10 +50,16 @@ class AppCatalogRepositoryImpl @Inject constructor (
     }
 
     override  fun observeAppCatalog(): Flow<List<AppCatalog>> {
-        return dao.observeAppCatalogWithWishList().filterNotNull().map { list ->
-            list.map { item ->
-                appCatalogMapper.toDomain(item.app).copy(
-                    isInWishList = item.wishList.isNotEmpty()
+        return combine(
+            dao.observeAppCatalogWithWishList().filterNotNull(),
+            dao.observeAppCatalogWithDownloads().filterNotNull()
+        ) { wishListItems, downloadsItems ->
+            val downloadsMap = downloadsItems.associateBy { it.app.id }
+            wishListItems.map { wishItem ->
+                val downloadsItem = downloadsMap[wishItem.app.id]
+                appCatalogMapper.toDomain(wishItem.app).copy(
+                    isInWishList = wishItem.wishList.isNotEmpty(),
+                    isDownload = downloadsItem?.downloadsList?.isNotEmpty() ?: false
                 )
             }
         }

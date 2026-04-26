@@ -12,7 +12,8 @@ class GetFilteredCatalogUseCase @Inject constructor(
 ) {
     data class Params(
         val category: Set<Category> = emptySet(),
-        val onlyWishList: Boolean = false
+        val onlyWishList: Boolean = false,
+        val onlyDownloads: Boolean = false
     )
 
     operator fun invoke(params: Params) : Flow<List<AppCatalog>>{
@@ -20,7 +21,8 @@ class GetFilteredCatalogUseCase @Inject constructor(
             list.filter {
                 val category = params.category.isEmpty() || it.category in params.category
                 val wishList = !params.onlyWishList || it.isInWishList
-                category && wishList
+                val downloads = !params.onlyDownloads || it.isDownload
+                category && wishList && downloads
             }
         }
     }

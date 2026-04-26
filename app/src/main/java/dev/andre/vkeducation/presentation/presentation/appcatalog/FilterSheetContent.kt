@@ -37,6 +37,7 @@ fun FilterSheetContent(
     currentParams: GetFilteredCatalogUseCase.Params,
     onFilterCategory: (Category) -> Unit,
     onFilterWishList: (Boolean) -> Unit,
+    onFilterDownloads: (Boolean) -> Unit,
     onReset: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -70,6 +71,23 @@ fun FilterSheetContent(
                 Switch(
                     checked = currentParams.onlyWishList,
                     onCheckedChange = onFilterWishList
+                )
+            }
+
+            HorizontalDivider()
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.onlyDownloads),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Switch(
+                    checked = currentParams.onlyDownloads,
+                    onCheckedChange = onFilterDownloads
                 )
             }
 
@@ -116,10 +134,12 @@ private fun PreviewFilterSheetContent() {
     FilterSheetContent(
         currentParams = GetFilteredCatalogUseCase.Params(
             category = setOf(Category.GAMES),
-            onlyWishList = false
+            onlyWishList = false,
+            onlyDownloads = false
         ),
         onFilterCategory = {},
         onFilterWishList = {},
+        onFilterDownloads = {},
         modifier = Modifier,
         onReset = {}
     )

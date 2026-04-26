@@ -37,10 +37,12 @@ fun AppCatalogScreen(
     scrollIndex: Int,
     listState: LazyListState,
     onToggleWishList: (String) -> Unit,
+    onToggleDownloads: (String) -> Unit,
     onFilterCategory: (Category) -> Unit,
     onFilterWishList: (Boolean) -> Unit,
+    onFilterDownloads: (Boolean) -> Unit,
     onReset: () -> Unit
-    ) {
+) {
     var showFilterMenu by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -69,6 +71,7 @@ fun AppCatalogScreen(
                 scrollIndex = scrollIndex,
                 listState = listState,
                 onToggleWishList = onToggleWishList,
+                onToggleDownloads = onToggleDownloads,
             )
         }
 
@@ -83,6 +86,7 @@ fun AppCatalogScreen(
                 currentParams = state.filterParams,
                 onFilterCategory = onFilterCategory,
                 onFilterWishList = onFilterWishList,
+                onFilterDownloads = onFilterDownloads,
                 onReset = onReset
             )
         }
@@ -135,7 +139,9 @@ private fun PreviewAppCatalogScreen() {
             isRefreshing = false,
             onFilterCategory = {},
             onFilterWishList = {},
-            onReset = {}
+            onReset = {},
+            onToggleDownloads = {},
+            onFilterDownloads = {}
         )
     }
 }

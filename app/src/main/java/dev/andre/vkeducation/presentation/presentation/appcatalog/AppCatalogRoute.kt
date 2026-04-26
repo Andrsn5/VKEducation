@@ -75,11 +75,17 @@ fun AppCatalogRoute(
                 onToggleWishList = { id ->
                     viewModel.toggleWishList(id)
                 },
+                onToggleDownloads = { id ->
+                    viewModel.toggleDownloads(id)
+                },
                 onFilterCategory = { category ->
                     viewModel.filterByCategory(category)
                 },
                 onFilterWishList = { onlyWishList ->
                     viewModel.filterByWishList(onlyWishList)
+                },
+                onFilterDownloads = { onlyDownloads ->
+                    viewModel.filterByDownloads(onlyDownloads)
                 },
                 onReset = { viewModel.resetFilter() }
             )

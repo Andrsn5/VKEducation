@@ -43,7 +43,9 @@ fun AppDetailsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onClickWishList: () -> Unit,
+    onToggleDownloads: () -> Unit,
     onDownload: () -> Unit,
+    onCancelDownload: () -> Unit,
     onDelete: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -84,7 +86,7 @@ fun AppDetailsScreen(
             )
 
             Spacer(Modifier.height(16.dp))
-            if (downloadState is DownloadStatus.Installed) {
+            if (appDetails.isDownload) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,7 +102,10 @@ fun AppDetailsScreen(
                         Text(text = stringResource(R.string.open))
                     }
                     Button(
-                        onClick = { onDelete() },
+                        onClick = {
+                            onToggleDownloads()
+                            onDelete()
+                        },
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(text = stringResource(R.string.delete))
@@ -115,6 +120,7 @@ fun AppDetailsScreen(
                             Toast.makeText(context, R.string.nonetwork, Toast.LENGTH_SHORT).show()
                         }
                     },
+                    onCancel = onCancelDownload,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -190,7 +196,9 @@ private fun Preview() {
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             onClickWishList = {},
+            onToggleDownloads = {},
             onDownload = {},
+            onCancelDownload = {},
             onDelete = {},
         )
     }
