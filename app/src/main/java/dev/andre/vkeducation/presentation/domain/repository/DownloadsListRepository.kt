@@ -6,4 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface DownloadsListRepository {
     suspend fun toggle(id: String)
     fun getApk(id: String): Flow<DownloadStatus>
+    suspend fun startDownload(id: String)
+    suspend fun cancelDownload(id: String)
+    fun observeDownloadStatus(id: String): Flow<DownloadStatus>
 }

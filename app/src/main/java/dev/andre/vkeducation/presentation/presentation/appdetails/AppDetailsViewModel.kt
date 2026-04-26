@@ -94,8 +94,11 @@ class AppDetailsViewModel @Inject constructor (
 
     fun download(id: String){
         downloadingApk?.cancel()
+        viewModelScope.launch {
+            downloadsListRepository.startDownload(id)
+        }
         downloadingApk = viewModelScope.launch {
-            downloadsListRepository.getApk(id).collect { downloadState->
+            downloadsListRepository.observeDownloadStatus(id).collect { downloadState->
                 _state.update { currentState->
                     if (currentState is AppDetailsState.Content){
                         currentState.copy( status = downloadState)
@@ -105,6 +108,13 @@ class AppDetailsViewModel @Inject constructor (
                     }
                 }
             }
+        }
+    }
+
+    fun cancelDownload(id: String) {
+        viewModelScope.launch {
+            downloadsListRepository.cancelDownload(id)
+            downloadingApk?.cancel()
         }
     }
     fun delete(id: String){

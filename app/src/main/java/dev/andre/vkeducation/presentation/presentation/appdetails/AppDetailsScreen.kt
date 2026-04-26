@@ -19,7 +19,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +45,7 @@ fun AppDetailsScreen(
     onClickWishList: () -> Unit,
     onToggleDownloads: () -> Unit,
     onDownload: () -> Unit,
+    onCancelDownload: () -> Unit,
     onDelete: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -55,12 +55,6 @@ fun AppDetailsScreen(
 
     val downloadState = state.status
     val appDetails = state.app
-
-    LaunchedEffect(downloadState) {
-        if (downloadState is DownloadStatus.Installed) {
-            onToggleDownloads()
-        }
-    }
 
     if (appDetails == null) {
         AppDetailsNotFoundScreen(
@@ -126,6 +120,7 @@ fun AppDetailsScreen(
                             Toast.makeText(context, R.string.nonetwork, Toast.LENGTH_SHORT).show()
                         }
                     },
+                    onCancel = onCancelDownload,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -203,6 +198,7 @@ private fun Preview() {
             onClickWishList = {},
             onToggleDownloads = {},
             onDownload = {},
+            onCancelDownload = {},
             onDelete = {},
         )
     }

@@ -17,12 +17,13 @@ import dev.andre.vkeducation.presentation.presentation.theme.VkEducationTheme
 @Composable
 fun InstallButton(
     onClick: () -> Unit,
+    onCancel: () -> Unit,
     downloadState: DownloadStatus,
 
     modifier: Modifier = Modifier,
 ) {
     Button(
-        onClick = onClick,
+        onClick = if (downloadState is DownloadStatus.Started || downloadState is DownloadStatus.Downloading) onCancel else onClick,
         shape = RoundedCornerShape(8.dp),
         contentPadding = PaddingValues(vertical = 12.dp),
         modifier = modifier,
@@ -48,6 +49,7 @@ private fun Preview() {
     VkEducationTheme {
         InstallButton(
             onClick = {},
+            onCancel = {},
             modifier = Modifier.fillMaxWidth(),
             downloadState = DownloadStatus.Prepare
         )

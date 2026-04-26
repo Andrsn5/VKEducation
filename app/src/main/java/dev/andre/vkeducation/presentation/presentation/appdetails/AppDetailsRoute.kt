@@ -32,6 +32,7 @@ fun AppDetailsRoute(
                 onClickWishList = { viewModel.toggleWishList(appId) },
                 onToggleDownloads = { viewModel.toggleDownloads(appId) },
                 onDownload = { viewModel.download(appId) },
+                onCancelDownload = { viewModel.cancelDownload(appId) },
                 onDelete = { viewModel.delete(appId) },
             )
         is AppDetailsState.Error ->
